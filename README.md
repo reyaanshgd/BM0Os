@@ -1,2 +1,2 @@
 # BMOos
-A new Os, that will (eventually us AI to complete all your day to day tasks).
+A small HTML Tutorial. To give others a few commands I learned in hour.
