@@ -1,40 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-  <body>
-        <h1>welcome to BMO0S, this will be a simple tutorial on HTML, and creating websites.</h1>
-        // first we can create a github repository. Next we navigate to code, codespaces, create new codespace, and then we can start coding. We can use the index.html file to write our code.
-        //to open our 
-        <h1>Welcome BMO0S</h1>
-        // h1,h2.h3, ... h6 all make text smaller and smaller. Here is the command: "<"h1">""<"/h1">"Welcome BMO0S"<"/h1">" without quotes.
-        <h2>(were currently in early development)</h2>
-        // "<"/h2">"were currently in early development"<"/h2">" without quotes.
-        <p>The goal for BMO0S is to create a simple, user-friendly operating system.</p>
-        // "<"p">"The goal for BMO0S is to create a simple, user-friendly operating system."<"/p">" without quotes.
-        <s>Strike Through</s>
-        // "<"s">"Strike Through"<"/s">" without quotes.
-        <p>break the <br> line like this</p>
-        // "<"p">"break the "<"br">" line like this"<"/p">" without quotes.
-        <p>use strong to <strong>bold text</strong></p>
-        // "<"p">"use strong to "<"strong">"bold text"<"/strong>"<"/p">" without quotes.
-        <p> <dfn>DFN Tag</dfn> is a tag that marks something being defined</p>
-        // "<"p">" "<"dfn">"DFN Tag"<"/dfn>" "is a tag that marks something being defined"<"/p">" without quotes.
-        <p><abbr title="abbreviation">abbr</abbr> is a tag that marks an abbreviated term</p>
-        // "<"p">" "<"abbr title="abbreviation">"abbr"<"/abbr>" "is a tag that marks an abbreviated term"<"/p">" without quotes.
-        <div style="color: blue"> content </div>
-        // "<"div style="color: blue">" content "<"/div">" without quotes.
-        //<style>
-            body {
-                background-image: url(./bmo-bmo-dance.jpg);
-                background-size: 1900px 800px;
-            }
-        </style>
-        <img style="width: 64px; height: 64px" src="" />
-        // to create an image of specific size: "<"img style="width: 64px; height: 64px" src="" />" without quotes.
-        <body style="font-family: Helvetica, Noto Sans, sans-serif"></body>
-        // to change the font of the body: "<"body style="font-family: Helvetica, Noto Sans, sans-serif">"<"/body">" without quotes.
-        <p style="color: red">This text is red</p>
-        // "<"p style="color: red">"This text is red"<"/p">" without quotes.
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Tutorial - BM0OS</title>
+    <style>
+        body {
+            background-color: #09ee7f;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .code-example {
+            background-color: #f4f4f4;
+            border-left: 4px solid #007bff;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .demo {
+            background-color: #e8f4f8;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML Tutorial - Welcome to BM0OS</h1>
+    <p><strong>Learn how to create websites with HTML!</strong></p>
+    <h2>by RGD</h2>
 
+    <hr>
+    
+    <h2>What is HTML?</h2>
+    <p>HTML (HyperText Markup Language) is the standard markup language for creating web pages. It provides the structure and content of websites.</p>
+    
+    <h2>Getting Started</h2>
+    <ol>
+        <li>Create a GitHub repository</li>
+        <li>Navigate to Code → Codespaces → Create Codespace</li>
+        <li>Create or open an <code>index.html</code> file</li>
+        <li>Write your HTML code and save</li>
+        <li>View your page in a web browser</li>
+    </ol>
+    
+    <hr>
+    
+    <h2>1. Headings (h1 to h6)</h2>
+    <p>Headings are used to create titles and section headers. They range from <code>&lt;h1&gt;</code> (largest) to <code>&lt;h6&gt;</code> (smallest).</p>
+    <div class="code-example">
+        &lt;h1&gt;This is a heading 1&lt;/h1&gt;<br>
+        &lt;h2&gt;This is a heading 2&lt;/h2&gt;<br>
+        &lt;h3&gt;This is a heading 3&lt;/h3&gt;
+    </div>
+    
+    <div class="demo">
+        <h3>Demo:</h3>
+        <h1 style="margin: 5px 0;">Heading 1</h1>
+        <h2 style="margin: 5px 0;">Heading 2</h2>
+        <h3 style="margin: 5px 0;">Heading 3</h3>
+    </div>
+    
+    <hr>
+    
+    <h2>2. Paragraphs (&lt;p&gt;)</h2>
+    <p>The <code>&lt;p&gt;</code> tag defines a paragraph of text.</p>
+    <div class="code-example">
+        &lt;p&gt;This is a paragraph of text.&lt;/p&gt;
+    </div>
+    
+    <hr>
+    
+    <h2>3. Text Formatting</h2>
+    
+    <h3>Strong/Bold Text</h3>
+    <p>Use <code>&lt;strong&gt;</code> to make text bold and give it semantic importance.</p>
+    <div class="code-example">
+        &lt;p&gt;This is &lt;strong&gt;bold text&lt;/strong&gt;&lt;/p&gt;
+    </div>
+    <div class="demo">
+        <p>This is <strong>bold text</strong></p>
+    </div>
+    
+    <h3>Strikethrough Text</h3>
+    <p>Use <code>&lt;s&gt;</code> to strike through text.</p>
+    <div class="code-example">
+        &lt;s&gt;This text is struck through&lt;/s&gt;
+    </div>
+    <div class="demo">
+        <s>This text is struck through</s>
+    </div>
+    
+    <h3>Line Breaks</h3>
+    <p>Use <code>&lt;br&gt;</code> to create a line break.</p>
+    <div class="code-example">
+        &lt;p&gt;Line 1&lt;br&gt;Line 2&lt;/p&gt;
+    </div>
+    <div class="demo">
+        <p>Line 1<br>Line 2</p>
+    </div>
+    
+    <hr>
+    
+    <h2>4. Definition and Abbreviation Tags</h2>
+    
+    <h3>Definition Tag (&lt;dfn&gt;)</h3>
+    <p>The <code>&lt;dfn&gt;</code> tag marks the definition of a term.</p>
+    <div class="code-example">
+        &lt;p&gt;&lt;dfn&gt;HTML&lt;/dfn&gt; is a markup language.&lt;/p&gt;
+    </div>
+    <div class="demo">
+        <p><dfn>HTML</dfn> is a markup language.</p>
+    </div>
+    
+    <h3>Abbreviation Tag (&lt;abbr&gt;)</h3>
+    <p>The <code>&lt;abbr&gt;</code> tag marks an abbreviated term with the full form in the title attribute.</p>
+    <div class="code-example">
+        &lt;p&gt;&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;&lt;/p&gt;
+    </div>
+    <div class="demo">
+        <p><abbr title="HyperText Markup Language">HTML</abbr> (hover over to see full form)</p>
+    </div>
+    
+    <hr>
+    
+    <h2>5. Styling with Colors and Fonts</h2>
+    
+    <h3>Text Color</h3>
+    <p>Use inline CSS with the style attribute to change text color.</p>
+    <div class="code-example">
+        &lt;p style="color: red;"&gt;This text is red&lt;/p&gt;
+    </div>
+    <div class="demo">
+        <p style="color: red;">This text is red</p>
+    </div>
+    
+    <h3>Colored Divs</h3>
+    <p>Use <code>&lt;div&gt;</code> to create containers with custom styling.</p>
+    <div class="code-example">
+        &lt;div style="color: blue; background-color: lightblue; padding: 10px;"&gt;<br>
+        &nbsp;&nbsp;Blue colored content<br>
+        &lt;/div&gt;
+    </div>
+    <div style="color: blue; background-color: lightblue; padding: 10px;">
+        Blue colored content
+    </div>
+    
+    <h3>Font Families</h3>
+    <p>Use the style attribute to change fonts.</p>
+    <div class="code-example">
+        &lt;p style="font-family: Arial, sans-serif;"&gt;Text in Arial&lt;/p&gt;
+    </div>
+    <div class="demo">
+        <p style="font-family: Arial, sans-serif;">Text in Arial</p>
+        <p style="font-family: Georgia, serif;">Text in Georgia</p>
+        <p style="font-family: 'Courier New', monospace;">Text in Courier New</p>
+    </div>
+    
+    <hr>
+    
+    <h2>6. Images</h2>
+    <p>Use <code>&lt;img&gt;</code> to embed images on your page.</p>
+    <div class="code-example">
+        &lt;img src="image.jpg" alt="Description" style="width: 200px; height: auto;"&gt;
+    </div>
+    <p><strong>Attributes:</strong></p>
+    <ul>
+        <li><code>src</code> - Path to the image file</li>
+        <li><code>alt</code> - Alternative text if image doesn't load</li>
+        <li><code>style</code> - CSS styling (width, height, etc.)</li>
+    </ul>
+    
+    <hr>
+    
+    <h2>7. Lists</h2>
+    
+    <h3>Unordered Lists (&lt;ul&gt;)</h3>
+    <div class="code-example">
+        &lt;ul&gt;<br>
+        &nbsp;&nbsp;&lt;li&gt;Item 1&lt;/li&gt;<br>
+        &nbsp;&nbsp;&lt;li&gt;Item 2&lt;/li&gt;<br>
+        &lt;/ul&gt;
+    </div>
+    
+    <h3>Ordered Lists (&lt;ol&gt;)</h3>
+    <div class="code-example">
+        &lt;ol&gt;<br>
+        &nbsp;&nbsp;&lt;li&gt;First item&lt;/li&gt;<br>
+        &nbsp;&nbsp;&lt;li&gt;Second item&lt;/li&gt;<br>
+        &lt;/ol&gt;
+    </div>
+    
+    <hr>
+    
+    <h2>8. Document Structure</h2>
+    <p>Every HTML document should have this basic structure:</p>
+    <div class="code-example">
+        &lt;!DOCTYPE html&gt;<br>
+        &lt;html lang="en"&gt;<br>
+        &lt;head&gt;<br>
+        &nbsp;&nbsp;&lt;meta charset="UTF-8"&gt;<br>
+        &nbsp;&nbsp;&lt;title&gt;Page Title&lt;/title&gt;<br>
+        &lt;/head&gt;<br>
+        &lt;body&gt;<br>
+        &nbsp;&nbsp;&lt;!-- Your content here --&gt;<br>
+        &lt;/body&gt;<br>
+        &lt;/html&gt;
+    </div>
+    
+    <hr>
+    
+    <h2>Next Steps</h2>
+    <ul>
+        <li>Experiment with different HTML tags</li>
+        <li>Learn CSS for advanced styling</li>
+        <li>Learn JavaScript for interactivity</li>
+        <li>Deploy your website to GitHub Pages</li>
+    </ul>
+    
+    <hr>
+    <p style="text-align: center; color: #666;">Happy coding! Created with BM0OS</p>
+</body>
 </html>
