@@ -3,225 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Tutorial - BM0OS</title>
+    <title>BM0OS HTML Instructer</title>
     <style>
+        :root {
+            color-scheme: dark;
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #09ee7f;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #071b2b 0%, #0f4d5c 45%, #1e8b70 100%);
+            color: #f5f7fb;
         }
-        h1, h2, h3 {
-            color: #333;
+
+        .shell {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 1rem;
         }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1rem;
+            background: rgba(6, 24, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 16px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .topbar p {
+            margin: 0.2rem 0 0;
+            color: #a9c8d0;
+            font-size: 0.92rem;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tab {
+            border: 0;
+            border-radius: 999px;
+            padding: 0.6rem 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.12);
+            color: #f2f8fb;
+        }
+
+        .tab.active {
+            background: #70f1c7;
+            color: #07221f;
+        }
+
+        .desktop-view {
+            position: relative;
+            flex: 1;
+            min-height: 70vh;
+            display: none;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(4, 17, 25, 0.24);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            padding: 1rem;
+        }
+
+        .desktop-view.active {
+            display: block;
+        }
+
+        .window {
+            position: absolute;
+            min-width: 240px;
+            max-width: calc(100% - 2rem);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.96);
+            color: #123;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            touch-action: none;
+        }
+
+        .titlebar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0.9rem;
+            background: linear-gradient(90deg, #203a5b 0%, #2d5f6f 100%);
+            color: white;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .titlebar.dragging {
+            cursor: grabbing;
+        }
+
+        .titlebar strong {
+            font-size: 0.95rem;
+        }
+
+        .content {
+            padding: 0.9rem 1rem 1rem;
+            line-height: 1.45;
+        }
+
+        .content img {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 0.5rem;
+        }
+
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.6rem;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 0.35rem 0.6rem;
+            border-radius: 999px;
+            background: #e8f5f3;
+            color: #135a4a;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .content ul {
+            margin: 0.5rem 0 0;
+            padding-left: 1rem;
+        }
+
         .code-example {
-            background-color: #f4f4f4;
-            border-left: 4px solid #007bff;
-            padding: 10px;
-            margin: 10px 0;
-            font-family: monospace;
+            margin-top: 0.6rem;
+            padding: 0.7rem;
+            border-radius: 10px;
+            background: #f4f7f9;
+            color: #17324a;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 0.84rem;
             overflow-x: auto;
         }
-        .demo {
-            background-color: #e8f4f8;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
+
+        .content code {
+            padding: 0.16rem 0.35rem;
+            border-radius: 0.35rem;
+            background: #eef6f7;
+            color: #144d5f;
+            font-size: 0.92em;
+        }
+
+        @media (max-width: 700px) {
+            .shell {
+                padding: 0.75rem;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .window {
+                min-width: min(84vw, 280px);
+            }
         }
     </style>
 </head>
 <body>
-    <h1>HTML Tutorial - Welcome to BM0OS</h1>
-    <p><strong>Learn how to create websites with HTML!</strong></p>
-    <p><a href="https://github.com/reyaanshgd/BM0Os/blob/main/index.html" target="_blank" rel="noopener noreferrer">Open the permanent GitHub version of this page</a></p>
-    <h2>by RGD</h2>
+    <div class="shell">
+        <header class="topbar">
+            <div>
+                <h1>BM0OS Desktop Switcher</h1>
+                <p>Choose a desktop tab to switch the workspace view.</p>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Desktop tabs">
+                <button class="tab active" type="button" data-target="home">Home</button>
+                <button class="tab" type="button" data-target="work">Work</button>
+                <button class="tab" type="button" data-target="tutorial">Tutorial</button>
+                <button class="tab" type="button" data-target="about">About</button>
+            </div>
+        </header>
 
-    <hr>
-    
-    <h2>What is HTML?</h2>
-    <p>HTML (HyperText Markup Language) is the standard markup language for creating web pages. It provides the structure and content of websites.</p>
-    
-    <h2>Getting Started</h2>
-    <ol>
-        <li>Create a GitHub repository</li>
-        <li>Navigate to Code → Codespaces → Create Codespace</li>
-        <li>Create or open an <code>index.html</code> file</li>
-        <li>Write your HTML code and save</li>
-        <li>View your page in a web browser</li>
-    </ol>
-    
-    <hr>
-    
-    <h2>1. Headings (h1 to h6)</h2>
-    <p>Headings are used to create titles and section headers. They range from <code>&lt;h1&gt;</code> (largest) to <code>&lt;h6&gt;</code> (smallest).</p>
-    <div class="code-example">
-        &lt;h1&gt;This is a heading 1&lt;/h1&gt;<br>
-        &lt;h2&gt;This is a heading 2&lt;/h2&gt;<br>
-        &lt;h3&gt;This is a heading 3&lt;/h3&gt;
+        <main>
+            <section class="desktop-view active" id="home" data-desktop="home">
+                <section class="window" style="left: 32px; top: 40px; width: 300px;">
+                    <div class="titlebar"><strong>Welcome</strong></div>
+                    <div class="content">
+                        <p>This desktop is for quick notes and launch points.</p>
+                        <div class="chip-list">
+                            <span class="chip">Start</span>
+                            <span class="chip">Simple</span>
+                            <span class="chip">Focus</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="window" style="left: 280px; top: 150px; width: 260px;">
+                    <div class="titlebar"><strong>Daily Plan</strong></div>
+                    <div class="content">
+                        <ul>
+                            <li>Review the latest updates</li>
+                            <li>Open the project notes</li>
+                            <li>Test the page in the browser</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <section class="desktop-view" id="work" data-desktop="work">
+                <section class="window" style="left: 70px; top: 50px; width: 320px;">
+                    <div class="titlebar"><strong>Project Board</strong></div>
+                    <div class="content">
+                        <p>Use this desktop for your current project stage.</p>
+                        <div class="chip-list">
+                            <span class="chip">Design</span>
+                            <span class="chip">Build</span>
+                            <span class="chip">Deploy</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="window" style="left: 360px; top: 180px; width: 280px;">
+                    <div class="titlebar"><strong>Artifacts</strong></div>
+                    <div class="content">
+                        <p>Keep screenshots, notes, and assets here.</p>
+                        <img src="bmo-bmo-dance.jpg" alt="BM0OS artwork">
+                    </div>
+                </section>
+            </section>
+
+            <section class="desktop-view" id="tutorial" data-desktop="tutorial">
+                <section class="window" style="left: 24px; top: 28px; width: 320px;">
+                    <div class="titlebar"><strong>HTML Basics</strong></div>
+                    <div class="content">
+                        <p>HTML is the structure of a webpage. These tags help you add content and layout.</p>
+                        <div class="code-example">&lt;h1&gt;Hello&lt;/h1&gt;<br>&lt;p&gt;This is a paragraph.&lt;/p&gt;</div>
+                    </div>
+                </section>
+
+                <section class="window" style="left: 300px; top: 120px; width: 280px;">
+                    <div class="titlebar"><strong>Headings & Paragraphs</strong></div>
+                    <div class="content">
+                        <p>Use <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code> for headings and <code>&lt;p&gt;</code> for paragraphs.</p>
+                        <div class="code-example">&lt;h2&gt;Section title&lt;/h2&gt;<br>&lt;p&gt;This explains the section.&lt;/p&gt;</div>
+                    </div>
+                </section>
+
+                <section class="window" style="left: 120px; top: 250px; width: 330px;">
+                    <div class="titlebar"><strong>Formatting & Links</strong></div>
+                    <div class="content">
+                        <p>Use <code>&lt;strong&gt;</code> for bold text, <code>&lt;br&gt;</code> for line breaks, and <code>&lt;a&gt;</code> for links.</p>
+                        <div class="code-example">&lt;strong&gt;Bold text&lt;/strong&gt;<br>&lt;br&gt;<br>&lt;a href="https://example.com"&gt;Visit&lt;/a&gt;</div>
+                    </div>
+                </section>
+
+                <section class="window" style="left: 430px; top: 40px; width: 300px;">
+                    <div class="titlebar"><strong>Images, Lists & Structure</strong></div>
+                    <div class="content">
+                        <p>Use <code>&lt;img&gt;</code>, <code>&lt;ul&gt;</code>/<code>&lt;ol&gt;</code>, and a basic document skeleton to build pages.</p>
+                        <div class="code-example">&lt;img src="photo.jpg" alt="Photo"&gt;<br>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;<br>&lt;!DOCTYPE html&gt;</div>
+                    </div>
+                </section>
+            </section>
+
+            <section class="desktop-view" id="about" data-desktop="about">
+                <section class="window" style="left: 90px; top: 60px; width: 300px;">
+                    <div class="titlebar"><strong>About BM0OS</strong></div>
+                    <div class="content">
+                        <p>This demo combines a simple desktop shell with a tabbed switching experience.</p>
+                    </div>
+                </section>
+
+                <section class="window" style="left: 320px; top: 220px; width: 240px;">
+                    <div class="titlebar"><strong>Contact</strong></div>
+                    <div class="content">
+                        <p>Use the top tabs to jump between desktops.</p>
+                        <ul>
+                            <li>Drag windows inside each desktop</li>
+                            <li>Switch tabs anytime</li>
+                            <li>Keep your workspace organized</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+        </main>
     </div>
-    
-    <div class="demo">
-        <h3>Demo:</h3>
-        <h1 style="margin: 5px 0;">Heading 1</h1>
-        <h2 style="margin: 5px 0;">Heading 2</h2>
-        <h3 style="margin: 5px 0;">Heading 3</h3>
-    </div>
-    
-    <hr>
-    
-    <h2>2. Paragraphs (&lt;p&gt;)</h2>
-    <p>The <code>&lt;p&gt;</code> tag defines a paragraph of text.</p>
-    <div class="code-example">
-        &lt;p&gt;This is a paragraph of text.&lt;/p&gt;
-    </div>
-    
-    <hr>
-    
-    <h2>3. Text Formatting</h2>
-    
-    <h3>Strong/Bold Text</h3>
-    <p>Use <code>&lt;strong&gt;</code> to make text bold and give it semantic importance.</p>
-    <div class="code-example">
-        &lt;p&gt;This is &lt;strong&gt;bold text&lt;/strong&gt;&lt;/p&gt;
-    </div>
-    <div class="demo">
-        <p>This is <strong>bold text</strong></p>
-    </div>
-    
-    <h3>Strikethrough Text</h3>
-    <p>Use <code>&lt;s&gt;</code> to strike through text.</p>
-    <div class="code-example">
-        &lt;s&gt;This text is struck through&lt;/s&gt;
-    </div>
-    <div class="demo">
-        <s>This text is struck through</s>
-    </div>
-    
-    <h3>Line Breaks</h3>
-    <p>Use <code>&lt;br&gt;</code> to create a line break.</p>
-    <div class="code-example">
-        &lt;p&gt;Line 1&lt;br&gt;Line 2&lt;/p&gt;
-    </div>
-    <div class="demo">
-        <p>Line 1<br>Line 2</p>
-    </div>
-    
-    <hr>
-    
-    <h2>4. Definition and Abbreviation Tags</h2>
-    
-    <h3>Definition Tag (&lt;dfn&gt;)</h3>
-    <p>The <code>&lt;dfn&gt;</code> tag marks the definition of a term.</p>
-    <div class="code-example">
-        &lt;p&gt;&lt;dfn&gt;HTML&lt;/dfn&gt; is a markup language.&lt;/p&gt;
-    </div>
-    <div class="demo">
-        <p><dfn>HTML</dfn> is a markup language.</p>
-    </div>
-    
-    <h3>Abbreviation Tag (&lt;abbr&gt;)</h3>
-    <p>The <code>&lt;abbr&gt;</code> tag marks an abbreviated term with the full form in the title attribute.</p>
-    <div class="code-example">
-        &lt;p&gt;&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;&lt;/p&gt;
-    </div>
-    <div class="demo">
-        <p><abbr title="HyperText Markup Language">HTML</abbr> (hover over to see full form)</p>
-    </div>
-    
-    <hr>
-    
-    <h2>5. Styling with Colors and Fonts</h2>
-    
-    <h3>Text Color</h3>
-    <p>Use inline CSS with the style attribute to change text color.</p>
-    <div class="code-example">
-        &lt;p style="color: red;"&gt;This text is red&lt;/p&gt;
-    </div>
-    <div class="demo">
-        <p style="color: red;">This text is red</p>
-    </div>
-    
-    <h3>Colored Divs</h3>
-    <p>Use <code>&lt;div&gt;</code> to create containers with custom styling.</p>
-    <div class="code-example">
-        &lt;div style="color: blue; background-color: lightblue; padding: 10px;"&gt;<br>
-        &nbsp;&nbsp;Blue colored content<br>
-        &lt;/div&gt;
-    </div>
-    <div style="color: blue; background-color: lightblue; padding: 10px;">
-        Blue colored content
-    </div>
-    
-    <h3>Font Families</h3>
-    <p>Use the style attribute to change fonts.</p>
-    <div class="code-example">
-        &lt;p style="font-family: Arial, sans-serif;"&gt;Text in Arial&lt;/p&gt;
-    </div>
-    <div class="demo">
-        <p style="font-family: Arial, sans-serif;">Text in Arial</p>
-        <p style="font-family: Georgia, serif;">Text in Georgia</p>
-        <p style="font-family: 'Courier New', monospace;">Text in Courier New</p>
-    </div>
-    
-    <hr>
-    
-    <h2>6. Images</h2>
-    <p>Use <code>&lt;img&gt;</code> to embed images on your page.</p>
-    <div class="code-example">
-        &lt;img src="image.jpg" alt="Description" style="width: 200px; height: auto;"&gt;
-    </div>
-    <p><strong>Attributes:</strong></p>
-    <ul>
-        <li><code>src</code> - Path to the image file</li>
-        <li><code>alt</code> - Alternative text if image doesn't load</li>
-        <li><code>style</code> - CSS styling (width, height, etc.)</li>
-    </ul>
-    
-    <hr>
-    
-    <h2>7. Lists</h2>
-    
-    <h3>Unordered Lists (&lt;ul&gt;)</h3>
-    <div class="code-example">
-        &lt;ul&gt;<br>
-        &nbsp;&nbsp;&lt;li&gt;Item 1&lt;/li&gt;<br>
-        &nbsp;&nbsp;&lt;li&gt;Item 2&lt;/li&gt;<br>
-        &lt;/ul&gt;
-    </div>
-    
-    <h3>Ordered Lists (&lt;ol&gt;)</h3>
-    <div class="code-example">
-        &lt;ol&gt;<br>
-        &nbsp;&nbsp;&lt;li&gt;First item&lt;/li&gt;<br>
-        &nbsp;&nbsp;&lt;li&gt;Second item&lt;/li&gt;<br>
-        &lt;/ol&gt;
-    </div>
-    
-    <hr>
-    
-    <h2>8. Document Structure</h2>
-    <p>Every HTML document should have this basic structure:</p>
-    <div class="code-example">
-        &lt;!DOCTYPE html&gt;<br>
-        &lt;html lang="en"&gt;<br>
-        &lt;head&gt;<br>
-        &nbsp;&nbsp;&lt;meta charset="UTF-8"&gt;<br>
-        &nbsp;&nbsp;&lt;title&gt;Page Title&lt;/title&gt;<br>
-        &lt;/head&gt;<br>
-        &lt;body&gt;<br>
-        &nbsp;&nbsp;&lt;!-- Your content here --&gt;<br>
-        &lt;/body&gt;<br>
-        &lt;/html&gt;
-    </div>
-    
-    <hr>
-    
-    <h2>Next Steps</h2>
-    <ul>
-        <li>Experiment with different HTML tags</li>
-        <li>Learn CSS for advanced styling</li>
-        <li>Learn JavaScript for interactivity</li>
-        <li>Deploy your website to GitHub Pages</li>
-    </ul>
-    
-    <hr>
-    <p style="text-align: center; color: #666;">Happy coding! Created with BM0OS</p>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const views = document.querySelectorAll('.desktop-view');
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                tabs.forEach((item) => item.classList.remove('active'));
+                views.forEach((view) => view.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.target).classList.add('active');
+            });
+        });
+
+        function makeWindowDraggable(windowEl) {
+            const titlebar = windowEl.querySelector('.titlebar');
+            if (!titlebar) {
+                return;
+            }
+
+            titlebar.addEventListener('pointerdown', (event) => {
+                event.preventDefault();
+                const view = windowEl.closest('.desktop-view');
+                const rect = windowEl.getBoundingClientRect();
+                const offsetX = event.clientX - rect.left;
+                const offsetY = event.clientY - rect.top;
+
+                const onMove = (moveEvent) => {
+                    const viewRect = view.getBoundingClientRect();
+                    const width = windowEl.offsetWidth;
+                    const height = windowEl.offsetHeight;
+                    const nextLeft = moveEvent.clientX - viewRect.left - offsetX;
+                    const nextTop = moveEvent.clientY - viewRect.top - offsetY;
+                    const maxLeft = Math.max(0, viewRect.width - width);
+                    const maxTop = Math.max(0, viewRect.height - height);
+
+                    windowEl.style.left = `${Math.max(0, Math.min(nextLeft, maxLeft))}px`;
+                    windowEl.style.top = `${Math.max(0, Math.min(nextTop, maxTop))}px`;
+                };
+
+                const onUp = () => {
+                    document.removeEventListener('pointermove', onMove);
+                    document.removeEventListener('pointerup', onUp);
+                };
+
+                document.addEventListener('pointermove', onMove);
+                document.addEventListener('pointerup', onUp);
+            });
+        }
+
+        document.querySelectorAll('.window').forEach(makeWindowDraggable);
+    </script>
 </body>
 </html>
