@@ -74,6 +74,36 @@
             color: #07221f;
         }
 
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .controls input,
+        .controls button {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            padding: 0.55rem 0.95rem;
+            background: rgba(255, 255, 255, 0.08);
+            color: #f6fbff;
+            font-size: 0.92rem;
+        }
+
+        .controls input {
+            min-width: 180px;
+            color: #f6fbff;
+        }
+
+        .controls button {
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
         .desktop-view {
             position: relative;
             flex: 1;
@@ -203,6 +233,12 @@
                 <button class="tab" type="button" data-target="tutorial">Tutorial</button>
                 <button class="tab" type="button" data-target="about">About</button>
             </div>
+            <div class="controls" aria-label="Add tabs and boxes">
+                <input id="new-tab-name" type="text" placeholder="New tab name" aria-label="New tab name">
+                <button id="add-tab-btn" type="button">Add tab</button>
+                <input id="new-box-title" type="text" placeholder="New box title" aria-label="New box title">
+                <button id="add-box-btn" type="button">Add box</button>
+            </div>
         </header>
 
         <main>
@@ -311,43 +347,40 @@
     </div>
 
     <script>
-        const tabs = document.querySelectorAll('.tab');
-        const views = document.querySelectorAll('.desktop-view');
+        const tabs = document.querySelector('.tabs');
+        const main = document.querySelector('main');
+        const newTabName = document.getElementById('new-tab-name');
+        const addTabBtn = document.getElementById('add-tab-btn');
+        const newBoxTitle = document.getElementById('new-box-title');
+        const addBoxBtn = document.getElementById('add-box-btn');
 
-        tabs.forEach((tab) => {
-            tab.addEventListener('click', () => {
-                tabs.forEach((item) => item.classList.remove('active'));
-                views.forEach((view) => view.classList.remove('active'));
+        const activate = (id) => {
+            document.querySelectorAll('.tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.target === id));
+            document.querySelectorAll('.desktop-view').forEach((view) => view.classList.toggle('active', view.id === id));
+        };
 
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.target).classList.add('active');
-            });
+        tabs.addEventListener('click', (event) => {
+            const tab = event.target.closest('.tab');
+            if (tab) activate(tab.dataset.target);
         });
 
-        function makeWindowDraggable(windowEl) {
-            const titlebar = windowEl.querySelector('.titlebar');
-            if (!titlebar) {
-                return;
-            }
+        const dragWindow = (win) => {
+            const titlebar = win.querySelector('.titlebar');
+            if (!titlebar) return;
 
             titlebar.addEventListener('pointerdown', (event) => {
                 event.preventDefault();
-                const view = windowEl.closest('.desktop-view');
-                const rect = windowEl.getBoundingClientRect();
+                const rect = win.getBoundingClientRect();
                 const offsetX = event.clientX - rect.left;
                 const offsetY = event.clientY - rect.top;
+                const view = win.closest('.desktop-view');
 
                 const onMove = (moveEvent) => {
                     const viewRect = view.getBoundingClientRect();
-                    const width = windowEl.offsetWidth;
-                    const height = windowEl.offsetHeight;
-                    const nextLeft = moveEvent.clientX - viewRect.left - offsetX;
-                    const nextTop = moveEvent.clientY - viewRect.top - offsetY;
-                    const maxLeft = Math.max(0, viewRect.width - width);
-                    const maxTop = Math.max(0, viewRect.height - height);
-
-                    windowEl.style.left = `${Math.max(0, Math.min(nextLeft, maxLeft))}px`;
-                    windowEl.style.top = `${Math.max(0, Math.min(nextTop, maxTop))}px`;
+                    const left = Math.min(Math.max(0, moveEvent.clientX - viewRect.left - offsetX), viewRect.width - win.offsetWidth);
+                    const top = Math.min(Math.max(0, moveEvent.clientY - viewRect.top - offsetY), viewRect.height - win.offsetHeight);
+                    win.style.left = `${left}px`;
+                    win.style.top = `${top}px`;
                 };
 
                 const onUp = () => {
@@ -358,9 +391,62 @@
                 document.addEventListener('pointermove', onMove);
                 document.addEventListener('pointerup', onUp);
             });
-        }
+        };
 
-        document.querySelectorAll('.window').forEach(makeWindowDraggable);
+        const makeWindow = (title, left = 40, top = 40, width = 300) => {
+            const win = document.createElement('section');
+            win.className = 'window';
+            win.style.left = `${left}px`;
+            win.style.top = `${top}px`;
+            win.style.width = `${width}px`;
+            win.innerHTML = `
+                <div class="titlebar"><strong>${title}</strong></div>
+                <div class="content">
+                    <p>This box was added to the current desktop.</p>
+                </div>`;
+            dragWindow(win);
+            return win;
+        };
+
+        const createTab = (label) => {
+            const id = `custom-${Date.now()}`;
+            const button = document.createElement('button');
+            button.className = 'tab';
+            button.type = 'button';
+            button.dataset.target = id;
+            button.textContent = label;
+            tabs.appendChild(button);
+
+            const view = document.createElement('section');
+            view.className = 'desktop-view';
+            view.id = id;
+            view.dataset.desktop = id;
+            view.appendChild(makeWindow(label, 40, 40, 300));
+            main.appendChild(view);
+            activate(id);
+        };
+
+        const addBox = (title) => {
+            const activeView = document.querySelector('.desktop-view.active');
+            if (!activeView) return;
+            const count = activeView.querySelectorAll('.window').length;
+            activeView.appendChild(makeWindow(title, 40 + (count * 30) % 320, 40 + Math.floor(count / 4) * 180, 280));
+        };
+
+        const submit = (input, action) => {
+            const value = input.value.trim();
+            if (!value) return;
+            action(value);
+            input.value = '';
+            input.focus();
+        };
+
+        addTabBtn.addEventListener('click', () => submit(newTabName, createTab));
+        addBoxBtn.addEventListener('click', () => submit(newBoxTitle, addBox));
+        newTabName.addEventListener('keydown', (event) => event.key === 'Enter' && submit(newTabName, createTab));
+        newBoxTitle.addEventListener('keydown', (event) => event.key === 'Enter' && submit(newBoxTitle, addBox));
+
+        document.querySelectorAll('.window').forEach(dragWindow);
     </script>
 </body>
 </html>
