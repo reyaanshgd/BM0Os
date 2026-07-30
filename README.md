@@ -1,5 +1,6 @@
 # BM0Os
-A small HTML Tutorial. To give others a few commands I learned in hour.
+# Features!
+- A small HTML Tutorial that includes few basic snippets of HTML.
+- Includes different tabs to switch between work, about, tutorial, etc.
+- Also includes movable boxes that follow cursor.
 
-Permanent link to the tutorial page:
-https://github.com/reyaanshgd/BM0Os/blob/main/index.html
