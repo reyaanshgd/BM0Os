@@ -1,163 +1,1141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BM0OS Desktop</title>
-<style>
-:root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
-*{box-sizing:border-box;}
-body{margin:0;background:linear-gradient(135deg,#071b2b 0%,#0e2336 45%,#0b1a2f 100%);color:#eef7ff;min-height:100vh;}
-.shell{display:flex;flex-direction:column;min-height:100vh;max-width:1280px;margin:0 auto;padding:1rem;gap:1rem;}
-.topbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;padding:1rem 1.25rem;border:1px solid rgba(255,255,255,.16);border-radius:22px;background:rgba(8,18,35,.92);backdrop-filter:blur(8px);box-shadow:0 12px 32px rgba(0,0,0,.18);}
-.topbar h1{margin:.1rem 0;font-size:1.24rem;}
-.topbar p{margin:0;color:#aac5d5;font-size:.95rem;}
-.controls{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;}
-.controls input,.controls button{border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:.58rem .9rem;background:rgba(255,255,255,.08);color:#eef7ff;font-size:.92rem;}
-.controls input{min-width:11rem;}
-.controls button{cursor:pointer;transition:background .2s ease,transform .2s ease;}
-.controls button:hover{background:rgba(255,255,255,.16);transform:translateY(-1px);}
-.tabs{display:flex;flex-wrap:wrap;gap:.5rem;padding:.2rem 0;}
-.tab{display:flex;align-items:center;gap:.35rem;padding:.55rem .8rem;border-radius:999px;background:rgba(255,255,255,.12);color:#eef7ff;cursor:pointer;user-select:none;}
-.tab.active{background:#70f1c7;color:#07221f;}
-.tab .label{font-weight:700;}
-.tab .actions{display:flex;gap:.25rem;}
-.tab button{background:rgba(0,0,0,0);border:none;color:inherit;cursor:pointer;padding:.2rem .35rem;border-radius:.45rem;}
-.tab button:hover{background:rgba(255,255,255,.18);} 
-.main{display:grid;min-height:70vh;}
-.desktop-view{position:relative;display:none;min-height:72vh;border-radius:24px;padding:1rem 1rem 1.25rem;background:linear-gradient(180deg,rgba(8,20,37,.88),rgba(10,21,38,.72));border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden;}
-.desktop-view.active{display:block;}
-.workspace-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;align-items:start;}
-.info-card{padding:1.15rem 1.2rem;border-radius:18px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px);box-shadow:0 10px 24px rgba(0,0,0,.16);}
-.eyebrow{display:inline-block;margin-bottom:.45rem;letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;font-weight:700;color:#70f1c7;}
-.info-card h2{margin:.2rem 0 .45rem;font-size:1.3rem;}
-.info-card p{margin:0;color:#cfe4ef;line-height:1.5;}
-.window{position:absolute;min-width:220px;max-width:calc(100% - 2rem);border-radius:16px;background:#f9fcff;color:#102236;box-shadow:0 14px 34px rgba(0,0,0,.16);border:1px solid rgba(0,0,0,.08);overflow:hidden;touch-action:none;}
-.titlebar{display:flex;justify-content:space-between;align-items:center;padding:.7rem .9rem;background:linear-gradient(90deg,#1e3b5a,#276372);color:#fff;cursor:grab;user-select:none;}
-.content{padding:.9rem 1rem 1rem;line-height:1.45;}
-.code{font-family:monospace;background:rgba(14,45,68,.08);padding:.15rem .35rem;border-radius:.35rem;}
-.footer{display:flex;justify-content:space-between;align-items:center;gap:.75rem;padding:.85rem 1rem;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(8,18,35,.72);color:#9dc1d1;font-size:.95rem;}
-@media(max-width:720px){.topbar{flex-direction:column;align-items:flex-start;}.window{min-width:calc(100% - 2rem);position:relative;left:0;top:0;}.footer{flex-direction:column;align-items:flex-start;}}
-</style>
-</head>
-<body>
-<div class="shell">
-  <header class="topbar">
-    <div>
-      <h1>BM0OS Desktop</h1>
-      <p>Create tabs, add boxes, and arrange your workspace in a clean layout.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>BM0OS Desktop</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #0b1a2f url("bmo-bmo-dance.jpg") center / cover no-repeat;
+        color: #eef7ff;
+        min-height: 100vh;
+      }
+      .shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1rem;
+        gap: 1rem;
+      }
+      .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 22px;
+        background: rgba(8, 18, 35, 0.92);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+      }
+      .topbar h1 {
+        margin: 0.1rem 0;
+        font-size: 1.24rem;
+      }
+      .topbar p {
+        margin: 0;
+        color: #aac5d5;
+        font-size: 0.95rem;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        align-items: center;
+      }
+      .controls input,
+      .controls button {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 999px;
+        padding: 0.58rem 0.9rem;
+        background: rgba(255, 255, 255, 0.08);
+        color: #eef7ff;
+        font-size: 0.92rem;
+      }
+      .controls input {
+        min-width: 11rem;
+      }
+      .controls button {
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          transform 0.2s ease;
+      }
+      .controls button:hover {
+        background: rgba(255, 255, 255, 0.16);
+        transform: translateY(-1px);
+      }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.2rem 0;
+      }
+      .tab {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.55rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #eef7ff;
+        cursor: pointer;
+        user-select: none;
+      }
+      .tab.active {
+        background: #70f1c7;
+        color: #07221f;
+      }
+      .tab .label {
+        font-weight: 700;
+      }
+      .tab .actions {
+        display: flex;
+        gap: 0.25rem;
+      }
+      .tab button {
+        background: rgba(0, 0, 0, 0);
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0.2rem 0.35rem;
+        border-radius: 0.45rem;
+      }
+      .tab button:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+      .main {
+        display: grid;
+        min-height: 70vh;
+      }
+      .desktop-view {
+        position: relative;
+        display: none;
+        min-height: 72vh;
+        border-radius: 24px;
+        padding: 1rem 1rem 1.25rem;
+        background: linear-gradient(
+          180deg,
+          rgba(8, 20, 37, 0.88),
+          rgba(10, 21, 38, 0.72)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+      }
+      .desktop-view.active {
+        display: block;
+      }
+      .workspace-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1rem;
+        align-items: start;
+      }
+      .info-card {
+        padding: 1.15rem 1.2rem;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.09);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+      }
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 0.45rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #70f1c7;
+      }
+      .info-card h2 {
+        margin: 0.2rem 0 0.45rem;
+        font-size: 1.3rem;
+      }
+      .info-card p {
+        margin: 0;
+        color: #cfe4ef;
+        line-height: 1.5;
+      }
+      .window {
+        position: absolute;
+        min-width: 220px;
+        max-width: calc(100% - 2rem);
+        border-radius: 16px;
+        background: #f9fcff;
+        color: #102236;
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        touch-action: none;
+      }
+      .bmo-panel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 65vh;
+        padding: 1rem;
+      }
+      .bmo-stage {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: min(100%, 480px);
+        min-height: 320px;
+        border-radius: 24px;
+        background: linear-gradient(180deg, rgba(74, 127, 156, 0.22), rgba(11, 26, 47, 0.6));
+        border: 1px solid rgba(255, 255, 255, 0.14);
+      }
+      .bmo-head {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border-radius: 28% 28% 30% 30%;
+        background: linear-gradient(180deg, #9ee7ff 0%, #6dd3f8 35%, #4bb3d4 100%);
+        border: 6px solid #0a2435;
+        box-shadow: inset 0 8px 18px rgba(255, 255, 255, 0.28), 0 18px 38px rgba(0, 0, 0, 0.22);
+      }
+      .bmo-head::before {
+        content: "";
+        position: absolute;
+        top: -28px;
+        left: 50%;
+        width: 14px;
+        height: 34px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: #c7f2ff;
+        border: 4px solid #0a2435;
+      }
+      .bmo-head::after {
+        content: "";
+        position: absolute;
+        top: -42px;
+        left: 50%;
+        width: 18px;
+        height: 18px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: #ffd76b;
+        border: 4px solid #0a2435;
+        box-shadow: 0 0 0 8px rgba(255, 215, 107, 0.16);
+      }
+      .bmo-face {
+        position: absolute;
+        inset: 28px 24px 22px;
+      }
+      .bmo-eye {
+        position: absolute;
+        top: 42px;
+        width: 28px;
+        height: 38px;
+        border-radius: 50%;
+        background: #0b2437;
+        box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.08);
+      }
+      .bmo-eye.left { left: 24px; }
+      .bmo-eye.right { right: 24px; }
+      .bmo-eye::after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 9px;
+        width: 8px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.8);
+      }
+      .bmo-mouth {
+        position: absolute;
+        left: 50%;
+        bottom: 26px;
+        width: 72px;
+        height: 38px;
+        transform: translateX(-50%);
+        border: 6px solid #0a2435;
+        border-top: 0;
+        border-radius: 0 0 36px 36px;
+        background: rgba(10, 36, 53, 0.08);
+      }
+      .bmo-smile {
+        position: absolute;
+        left: 50%;
+        bottom: 18px;
+        width: 52px;
+        height: 18px;
+        transform: translateX(-50%);
+        border-bottom: 6px solid #0a2435;
+        border-radius: 0 0 28px 28px;
+      }
+      .titlebar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.7rem 0.9rem;
+        background: linear-gradient(90deg, #1e3b5a, #276372);
+        color: #fff;
+        cursor: grab;
+        user-select: none;
+      }
+      .content {
+        padding: 0.9rem 1rem 1rem;
+        line-height: 1.45;
+      }
+      .code {
+        font-family: monospace;
+        background: rgba(14, 45, 68, 0.08);
+        padding: 0.15rem 0.35rem;
+        border-radius: 0.35rem;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.85rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 16px;
+        background: rgba(8, 18, 35, 0.72);
+        color: #9dc1d1;
+        font-size: 0.95rem;
+      }
+      .controller-launcher {
+        position: fixed;
+        left: 1.25rem;
+        bottom: 1.25rem;
+        z-index: 10;
+        display: grid;
+        place-items: center;
+        width: 76px;
+        height: 76px;
+        padding: 0;
+        border: 2px solid rgba(255, 215, 107, 0.9);
+        border-radius: 50%;
+        background: rgba(8, 18, 35, 0.92);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .controller-launcher:hover,
+      .controller-launcher:focus-visible {
+        transform: translateY(-3px);
+        border-color: #fff;
+        outline: none;
+      }
+      .controller-launcher img {
+        width: 58px;
+        height: 58px;
+        object-fit: contain;
+      }
+      .emulator-panel {
+        display: grid;
+        place-items: center;
+        min-height: 62vh;
+        padding: 1.5rem;
+      }
+      .emulator-card {
+        width: min(720px, 100%);
+        padding: 2rem;
+        border: 1px solid rgba(255, 215, 107, 0.35);
+        border-radius: 18px;
+        background: rgba(8, 18, 35, 0.76);
+        text-align: center;
+      }
+      .emulator-card h2 {
+        margin-top: 0;
+        color: #ffd76b;
+      }
+      .emulator-card p {
+        color: #cfe4ef;
+        line-height: 1.5;
+      }
+      .emulator-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.7rem;
+        margin-top: 1.25rem;
+      }
+      .emulator-actions a {
+        border-radius: 999px;
+        padding: 0.65rem 0.9rem;
+        background: #ffd76b;
+        color: #172238;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .emulator-form {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        text-align: left;
+      }
+      .emulator-form label {
+        color: #d9fff2;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+      .emulator-form input[type="file"] {
+        width: 100%;
+        padding: 0.6rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #eef7ff;
+      }
+      .emulator-form button {
+        justify-self: center;
+        border: 0;
+        border-radius: 999px;
+        padding: 0.7rem 1rem;
+        background: #70f1c7;
+        color: #07221f;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .emulator-form button:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+      .emulator-status {
+        min-height: 1.5rem;
+        margin: 0.9rem 0 0;
+        color: #ffd76b;
+        font-size: 0.9rem;
+      }
+      #web-emulator {
+        width: 100%;
+        min-height: 420px;
+        margin-top: 1.25rem;
+        background: #050b14;
+      }
+      .bmo-assistant {
+        position: fixed;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        z-index: 10;
+      }
+      .bmo-assistant-toggle {
+        display: grid;
+        place-items: center;
+        width: 76px;
+        height: 76px;
+        padding: 0;
+        border: 2px solid rgba(112, 241, 199, 0.85);
+        border-radius: 50%;
+        background: rgba(8, 18, 35, 0.9);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .bmo-assistant-toggle:hover,
+      .bmo-assistant-toggle:focus-visible {
+        transform: translateY(-3px);
+        border-color: #fff;
+        outline: none;
+      }
+      .bmo-assistant-toggle img {
+        width: 62px;
+        height: 62px;
+        object-fit: contain;
+      }
+      .bmo-assistant-panel {
+        position: absolute;
+        right: 0;
+        bottom: 5.5rem;
+        display: none;
+        width: min(340px, calc(100vw - 2rem));
+        overflow: hidden;
+        border: 1px solid rgba(112, 241, 199, 0.45);
+        border-radius: 18px;
+        background: rgba(8, 18, 35, 0.96);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.36);
+        backdrop-filter: blur(12px);
+      }
+      .bmo-assistant-panel.open {
+        display: block;
+      }
+      .bmo-assistant-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.8rem 1rem;
+        background: linear-gradient(90deg, #1e3b5a, #276372);
+      }
+      .bmo-assistant-header strong {
+        color: #fff;
+      }
+      .bmo-assistant-close {
+        border: 0;
+        background: transparent;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      .bmo-assistant-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        max-height: 230px;
+        overflow-y: auto;
+        padding: 0.9rem;
+      }
+      .bmo-message {
+        max-width: 88%;
+        margin: 0;
+        padding: 0.55rem 0.7rem;
+        border-radius: 12px;
+        line-height: 1.35;
+        font-size: 0.9rem;
+      }
+      .bmo-message.bmo {
+        align-self: flex-start;
+        background: rgba(112, 241, 199, 0.16);
+        color: #d9fff2;
+      }
+      .bmo-message.user {
+        align-self: flex-end;
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+      }
+      .bmo-assistant-form {
+        display: flex;
+        gap: 0.45rem;
+        padding: 0.75rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .bmo-assistant-form input {
+        min-width: 0;
+        flex: 1;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 999px;
+        padding: 0.6rem 0.75rem;
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+      .bmo-assistant-form button {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.6rem 0.8rem;
+        background: #70f1c7;
+        color: #07221f;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .bmo-assistant-form button:disabled {
+        cursor: wait;
+        opacity: 0.55;
+      }
+      @media (max-width: 720px) {
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .window {
+          min-width: calc(100% - 2rem);
+          position: relative;
+          left: 0;
+          top: 0;
+        }
+        .footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .bmo-assistant {
+          right: 0.75rem;
+          bottom: 0.75rem;
+        }
+        .controller-launcher {
+          left: 0.75rem;
+          bottom: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <h1>BM0OS Desktop</h1>
+          <p>
+            Create tabs, add boxes, and arrange your workspace in a clean
+            layout.
+          </p>
+        </div>
+        <div class="controls">
+          <input id="tab-name" placeholder="New tab name" />
+          <button id="add-tab">Add tab</button>
+          <input id="box-name" placeholder="New box title" />
+          <button id="add-box">Add box</button>
+        </div>
+      </header>
+
+      <nav class="tabs" id="tabbar" aria-label="Desktop tabs"></nav>
+
+      <main class="main" id="main">
+        <section class="desktop-view active" id="home">
+          <div class="workspace-grid">
+            <article class="info-card">
+              <p class="eyebrow">Overview</p>
+              <h2>Welcome to your BM0OS desktop</h2>
+              <p>
+                Use the controls above to add tabs, create new boxes, and drag
+                them into place.
+              </p>
+            </article>
+            <section class="window" style="left: 32px; top: 40px; width: 300px">
+              <div class="titlebar"><strong>Welcome</strong></div>
+              <div class="content">
+                <p>Use the controls to customize this desktop.</p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="desktop-view" id="work">
+          <div class="workspace-grid">
+            <article class="info-card">
+              <p class="eyebrow">Work</p>
+              <h2>Stay focused</h2>
+              <p>Keep your daily priorities and project notes in one place.</p>
+            </article>
+            <section class="window" style="left: 60px; top: 48px; width: 300px">
+              <div class="titlebar"><strong>Work</strong></div>
+              <div class="content"><p>Keep tasks here.</p></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="desktop-view" id="tutorial">
+          <div class="workspace-grid">
+            <article class="info-card">
+              <p class="eyebrow">Tutorial</p>
+              <h2>Learn the layout</h2>
+              <p>
+                Experiment with tabs and boxes to build a workspace that matches
+                your flow.
+              </p>
+            </article>
+            <section class="window" style="left: 40px; top: 40px; width: 300px">
+              <div class="titlebar"><strong>HTML Basics</strong></div>
+              <div class="content">
+                <p>
+                  Use <span class="code">&lt;h1&gt;</span> to
+                  <span class="code">&lt;h6&gt;</span> for headings and
+                  <span class="code">&lt;p&gt;</span> for paragraphs.
+                </p>
+              </div>
+            </section>
+            <section
+              class="window"
+              style="left: 360px; top: 80px; width: 300px"
+            >
+              <div class="titlebar"><strong>Lists</strong></div>
+              <div class="content">
+                <p>
+                  Use <span class="code">&lt;ul&gt;</span> and
+                  <span class="code">&lt;ol&gt;</span> for bullet and numbered
+                  lists.
+                </p>
+              </div>
+            </section>
+            <section
+              class="window"
+              style="left: 120px; top: 260px; width: 300px"
+            >
+              <div class="titlebar"><strong>Links & Images</strong></div>
+              <div class="content">
+                <p>
+                  Link pages with <span class="code">&lt;a&gt;</span> and add
+                  media with <span class="code">&lt;img&gt;</span>.
+                </p>
+              </div>
+            </section>
+            <section
+              class="window"
+              style="left: 430px; top: 300px; width: 300px"
+            >
+              <div class="titlebar"><strong>Structure</strong></div>
+              <div class="content">
+                <p>
+                  Build pages with <span class="code">&lt;header&gt;</span>,
+                  <span class="code">&lt;main&gt;</span>, and
+                  <span class="code">&lt;footer&gt;</span>.
+                </p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="desktop-view" id="about">
+          <div class="workspace-grid">
+            <article class="info-card">
+              <p class="eyebrow">About</p>
+              <h2>Built for quick ideas</h2>
+              <p>
+                Drag boxes around and organize your desktop without leaving the
+                browser.
+              </p>
+            </article>
+            <section class="window" style="left: 50px; top: 44px; width: 300px">
+              <div class="titlebar"><strong>About</strong></div>
+              <div class="content">
+                <p>Drag boxes and organize your desktop.</p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="desktop-view" id="games">
+          <div class="emulator-panel">
+            <article class="emulator-card">
+              <p class="eyebrow">Game cartridge</p>
+              <h2>Kirby's Dream Land 2 DX v1.2</h2>
+              <p>
+                Choose your legally owned original Kirby's Dream Land 2 ROM and
+                the supplied BPS patch. Everything is patched locally in your
+                browser, then launched in a WebAssembly SNES emulator.
+              </p>
+              <form class="emulator-form" id="emulator-form">
+                <label for="original-rom">Original ROM (.sfc or .smc)</label>
+                <input id="original-rom" type="file" accept=".sfc,.smc,application/octet-stream" required />
+                <label for="bps-patch">DX patch ZIP or BPS file</label>
+                <input id="bps-patch" type="file" accept=".zip,.bps,application/zip,application/octet-stream" required />
+                <button type="submit">Patch and play in browser</button>
+              </form>
+              <p class="emulator-status" id="emulator-status" aria-live="polite"></p>
+              <div id="web-emulator" aria-label="SNES emulator"></div>
+              <div class="emulator-actions">
+                <a href="snes9x%20emulator.zip" download>Download Snes9x</a>
+                <a href="Kirby's%20Dream%20Land%202%20DX%20v1.2.zip" download>Download game patch</a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>BM0OS is ready for local preview.</span>
+        <span>Open the site at http://127.0.0.1:55999</span>
+      </footer>
     </div>
-    <div class="controls">
-      <input id="tab-name" placeholder="New tab name">
-      <button id="add-tab">Add tab</button>
-      <input id="box-name" placeholder="New box title">
-      <button id="add-box">Add box</button>
-    </div>
-  </header>
-
-  <nav class="tabs" id="tabbar" aria-label="Desktop tabs"></nav>
-
-  <main class="main" id="main">
-    <section class="desktop-view active" id="home">
-      <div class="workspace-grid">
-        <article class="info-card">
-          <p class="eyebrow">Overview</p>
-          <h2>Welcome to your BM0OS desktop</h2>
-          <p>Use the controls above to add tabs, create new boxes, and drag them into place.</p>
-        </article>
-        <section class="window" style="left:32px;top:40px;width:300px;">
-          <div class="titlebar"><strong>Welcome</strong></div>
-          <div class="content"><p>Use the controls to customize this desktop.</p></div>
-        </section>
+    <aside class="bmo-assistant" aria-label="Ask BMO">
+      <div class="bmo-assistant-panel" id="bmo-assistant-panel">
+        <div class="bmo-assistant-header">
+          <strong>Ask BMO</strong>
+          <button class="bmo-assistant-close" id="bmo-assistant-close" type="button" aria-label="Close Ask BMO">&times;</button>
+        </div>
+        <div class="bmo-assistant-messages" id="bmo-assistant-messages" aria-live="polite">
+          <p class="bmo-message bmo">Hi! Ask me anything general.</p>
+        </div>
+        <form class="bmo-assistant-form" id="bmo-assistant-form">
+          <input id="bmo-assistant-input" type="text" placeholder="Ask BMO..." autocomplete="off" aria-label="Question for BMO" />
+          <button type="submit">Ask</button>
+        </form>
       </div>
-    </section>
+      <button class="bmo-assistant-toggle" id="bmo-assistant-toggle" type="button" aria-label="Open Ask BMO" aria-expanded="false">
+        <img id="bmo-assistant-image" src="bmo-sad.png" alt="Sad BMO" />
+      </button>
+    </aside>
+    <button class="controller-launcher" id="controller-launcher" type="button" aria-label="Open games">
+      <img src="retro controller.png" alt="Retro controller" />
+    </button>
+    <script>
+      const tabbar = document.getElementById("tabbar");
+      const main = document.getElementById("main");
+      const tabName = document.getElementById("tab-name");
+      const boxName = document.getElementById("box-name");
+      const addTab = document.getElementById("add-tab");
+      const addBox = document.getElementById("add-box");
+      const controllerLauncher = document.getElementById("controller-launcher");
+      const emulatorForm = document.getElementById("emulator-form");
+      const originalRomInput = document.getElementById("original-rom");
+      const bpsPatchInput = document.getElementById("bps-patch");
+      const emulatorStatus = document.getElementById("emulator-status");
+      const emulatorButton = emulatorForm.querySelector("button");
+      const makeTab = (id, label) => {
+        const tab = document.createElement("div");
+        tab.className = "tab";
+        tab.dataset.target = id;
+        tab.innerHTML = `<span class="label">${label}</span><span class="actions"><button data-action="edit" title="Rename">✎</button><button data-action="left" title="Move left">◀</button><button data-action="right" title="Move right">▶</button><button data-action="delete" title="Delete">✕</button></span>`;
+        return tab;
+      };
+      const makeWindow = (title, left = 40, top = 40, width = 300) => {
+        const win = document.createElement("section");
+        win.className = "window";
+        win.style.left = left + "px";
+        win.style.top = top + "px";
+        win.style.width = width + "px";
+        win.innerHTML = `<div class="titlebar"><strong>${title}</strong></div><div class="content"><p>Drag this box around.</p></div>`;
+        dragBox(win);
+        return win;
+      };
+      const activate = (id) => {
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) =>
+            t.classList.toggle("active", t.dataset.target === id),
+          );
+        document
+          .querySelectorAll(".desktop-view")
+          .forEach((v) => v.classList.toggle("active", v.id === id));
+      };
+      const addDesktop = (label) => {
+        const id = "tab-" + Date.now();
+        const tab = makeTab(id, label);
+        tabbar.appendChild(tab);
+        const view = document.createElement("section");
+        view.className = "desktop-view";
+        view.id = id;
+        view.appendChild(makeWindow(label));
+        main.appendChild(view);
+        activate(id);
+      };
+      const activeView = () => document.querySelector(".desktop-view.active");
+      const addBoxToActive = (title) => {
+        const view = activeView();
+        if (!view) return;
+        const count = view.querySelectorAll(".window").length;
+        view.appendChild(
+          makeWindow(
+            title,
+            40 + ((count * 30) % 320),
+            40 + Math.floor(count / 4) * 180,
+            280,
+          ),
+        );
+      };
+      const moveTab = (tab, dir) => {
+        const sibling =
+          dir < 0 ? tab.previousElementSibling : tab.nextElementSibling;
+        if (!sibling) return;
+        const view = document.getElementById(tab.dataset.target);
+        const targetView =
+          dir < 0 ? view.previousElementSibling : view.nextElementSibling;
+        tabbar.insertBefore(tab, sibling);
+        main.insertBefore(view, targetView);
+      };
+      const renameTab = (tab) => {
+        const name = prompt(
+          "New tab name",
+          tab.querySelector(".label").textContent,
+        );
+        if (name) tab.querySelector(".label").textContent = name;
+      };
+      const removeTab = (tab) => {
+        const view = document.getElementById(tab.dataset.target);
+        const active = tab.classList.contains("active");
+        const next = tab.previousElementSibling || tab.nextElementSibling;
+        tab.remove();
+        view.remove();
+        if (active && next) activate(next.dataset.target);
+      };
+      const tabClick = (e) => {
+        const action = e.target.closest("button[data-action]");
+        const tab = e.target.closest(".tab");
+        if (action && tab) {
+          const act = action.dataset.action;
+          if (act === "edit") renameTab(tab);
+          if (act === "left") moveTab(tab, -1);
+          if (act === "right") moveTab(tab, 1);
+          if (act === "delete") removeTab(tab);
+        } else if (tab) {
+          activate(tab.dataset.target);
+        }
+      };
+      const submit = (input, fn) => {
+        const value = input.value.trim();
+        if (!value) return;
+        fn(value);
+        input.value = "";
+        input.focus();
+      };
+      addTab.addEventListener("click", () => submit(tabName, addDesktop));
+      addBox.addEventListener("click", () => submit(boxName, addBoxToActive));
+      [tabName, boxName].forEach((input) =>
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter")
+            e.target === tabName ? addTab.click() : addBox.click();
+        }),
+      );
+      const dragBox = (win) => {
+        const bar = win.querySelector(".titlebar");
+        if (!bar) return;
+        bar.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          const view = win.closest(".desktop-view");
+          const startX = e.clientX,
+            startY = e.clientY,
+            startLeft = parseInt(win.style.left, 10) || 0,
+            startTop = parseInt(win.style.top, 10) || 0;
+          const move = (e) => {
+            const rect = view.getBoundingClientRect();
+            const left = Math.min(
+              Math.max(0, startLeft + e.clientX - startX),
+              rect.width - win.offsetWidth,
+            );
+            const top = Math.min(
+              Math.max(0, startTop + e.clientY - startY),
+              rect.height - win.offsetHeight,
+            );
+            win.style.left = left + "px";
+            win.style.top = top + "px";
+          };
+          const up = () => {
+            document.removeEventListener("pointermove", move);
+            document.removeEventListener("pointerup", up);
+          };
+          document.addEventListener("pointermove", move);
+          document.addEventListener("pointerup", up);
+        });
+      };
+      document.querySelectorAll(".window").forEach(dragBox);
+      const tabs = [
+        ["home", "Home"],
+        ["work", "Work"],
+        ["tutorial", "Tutorial"],
+        ["about", "About"],
+        ["games", "Games"],
+      ];
+      tabs.forEach(([id, label]) => tabbar.appendChild(makeTab(id, label)));
+      activate("home");
+      tabbar.addEventListener("click", tabClick);
+      controllerLauncher.addEventListener("click", () => activate("games"));
 
-    <section class="desktop-view" id="work">
-      <div class="workspace-grid">
-        <article class="info-card">
-          <p class="eyebrow">Work</p>
-          <h2>Stay focused</h2>
-          <p>Keep your daily priorities and project notes in one place.</p>
-        </article>
-        <section class="window" style="left:60px;top:48px;width:300px;">
-          <div class="titlebar"><strong>Work</strong></div>
-          <div class="content"><p>Keep tasks here.</p></div>
-        </section>
-      </div>
-    </section>
+      const readBpsVarInt = (bytes, state) => {
+        let value = 0;
+        let shift = 1;
+        while (state.position < bytes.length) {
+          const data = bytes[state.position++];
+          value += (data & 0x7f) * shift;
+          if (data & 0x80) return value;
+          shift *= 0x80;
+          value += shift;
+        }
+        throw new Error("The BPS patch is incomplete.");
+      };
+      const readBpsSigned = (bytes, state) => {
+        const value = readBpsVarInt(bytes, state);
+        return value & 1 ? -(value >> 1) - 1 : value >> 1;
+      };
+      const applyBpsPatch = (source, patch) => {
+        const bytes = new Uint8Array(patch);
+        const header = new TextDecoder().decode(bytes.slice(0, 4));
+        if (header !== "BPS1") throw new Error("Choose a valid BPS patch.");
+        const state = { position: 4 };
+        const sourceSize = readBpsVarInt(bytes, state);
+        const targetSize = readBpsVarInt(bytes, state);
+        const metadataSize = readBpsVarInt(bytes, state);
+        state.position += metadataSize;
+        if (source.length !== sourceSize) {
+          throw new Error("That ROM does not match the patch's required source ROM.");
+        }
+        const target = new Uint8Array(targetSize);
+        let outputPosition = 0;
+        let sourceRelative = 0;
+        let targetRelative = 0;
+        while (state.position < bytes.length - 12 && outputPosition < targetSize) {
+          const action = readBpsVarInt(bytes, state);
+          const length = (action >> 2) + 1;
+          switch (action & 3) {
+            case 0:
+              target.set(source.slice(outputPosition, outputPosition + length), outputPosition);
+              break;
+            case 1:
+              target.set(bytes.slice(state.position, state.position + length), outputPosition);
+              state.position += length;
+              break;
+            case 2:
+              sourceRelative += readBpsSigned(bytes, state);
+              for (let index = 0; index < length; index++) {
+                target[outputPosition + index] = source[sourceRelative + index];
+              }
+              sourceRelative += length;
+              break;
+            case 3:
+              targetRelative += readBpsSigned(bytes, state);
+              for (let index = 0; index < length; index++) {
+                target[outputPosition + index] = target[targetRelative + index];
+              }
+              targetRelative += length;
+              break;
+            default:
+              throw new Error("Unsupported BPS action.");
+          }
+          outputPosition += length;
+        }
+        if (outputPosition !== targetSize) throw new Error("The BPS patch could not be applied.");
+        return target;
+      };
+      const getPatchBytes = async (file) => {
+        const buffer = await file.arrayBuffer();
+        if (file.name.toLowerCase().endsWith(".bps")) return buffer;
+        const zip = await JSZip.loadAsync(buffer);
+        const patchEntry = Object.values(zip.files).find((entry) => entry.name.toLowerCase().endsWith(".bps"));
+        if (!patchEntry) throw new Error("No BPS patch was found in that ZIP file.");
+        return patchEntry.async("arraybuffer");
+      };
+      const startWebEmulator = (patchedRom) => {
+        const previousLoader = document.getElementById("emulatorjs-loader");
+        if (previousLoader) previousLoader.remove();
+        window.EJS_player = "#web-emulator";
+        window.EJS_core = "snes";
+        window.EJS_gameUrl = URL.createObjectURL(new Blob([patchedRom], { type: "application/octet-stream" }));
+        window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+        const loader = document.createElement("script");
+        loader.id = "emulatorjs-loader";
+        loader.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
+        document.body.appendChild(loader);
+      };
+      emulatorForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const originalRom = originalRomInput.files[0];
+        const patchFile = bpsPatchInput.files[0];
+        if (!originalRom || !patchFile) return;
+        emulatorButton.disabled = true;
+        emulatorStatus.textContent = "Applying the patch locally...";
+        try {
+          const patchedRom = applyBpsPatch(
+            new Uint8Array(await originalRom.arrayBuffer()),
+            await getPatchBytes(patchFile),
+          );
+          emulatorStatus.textContent = "Patch applied. Loading the web emulator...";
+          startWebEmulator(patchedRom);
+        } catch (error) {
+          emulatorStatus.textContent = error.message;
+        } finally {
+          emulatorButton.disabled = false;
+        }
+      });
+      const jsZipScript = document.createElement("script");
+      jsZipScript.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
+      document.head.appendChild(jsZipScript);
 
-    <section class="desktop-view" id="tutorial">
-      <div class="workspace-grid">
-        <article class="info-card">
-          <p class="eyebrow">Tutorial</p>
-          <h2>Learn the layout</h2>
-          <p>Experiment with tabs and boxes to build a workspace that matches your flow.</p>
-        </article>
-        <section class="window" style="left:40px;top:40px;width:300px;">
-          <div class="titlebar"><strong>HTML Basics</strong></div>
-          <div class="content"><p>Use <span class="code">&lt;h1&gt;</span> to <span class="code">&lt;h6&gt;</span> for headings and <span class="code">&lt;p&gt;</span> for paragraphs.</p></div>
-        </section>
-        <section class="window" style="left:360px;top:80px;width:300px;">
-          <div class="titlebar"><strong>Lists</strong></div>
-          <div class="content"><p>Use <span class="code">&lt;ul&gt;</span> and <span class="code">&lt;ol&gt;</span> for bullet and numbered lists.</p></div>
-        </section>
-        <section class="window" style="left:120px;top:260px;width:300px;">
-          <div class="titlebar"><strong>Links & Images</strong></div>
-          <div class="content"><p>Link pages with <span class="code">&lt;a&gt;</span> and add media with <span class="code">&lt;img&gt;</span>.</p></div>
-        </section>
-        <section class="window" style="left:430px;top:300px;width:300px;">
-          <div class="titlebar"><strong>Structure</strong></div>
-          <div class="content"><p>Build pages with <span class="code">&lt;header&gt;</span>, <span class="code">&lt;main&gt;</span>, and <span class="code">&lt;footer&gt;</span>.</p></div>
-        </section>
-      </div>
-    </section>
-
-    <section class="desktop-view" id="about">
-      <div class="workspace-grid">
-        <article class="info-card">
-          <p class="eyebrow">About</p>
-          <h2>Built for quick ideas</h2>
-          <p>Drag boxes around and organize your desktop without leaving the browser.</p>
-        </article>
-        <section class="window" style="left:50px;top:44px;width:300px;">
-          <div class="titlebar"><strong>About</strong></div>
-          <div class="content"><p>Drag boxes and organize your desktop.</p></div>
-        </section>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <span>BM0OS is ready for local preview.</span>
-    <span>Open the site at http://127.0.0.1:55999</span>
-  </footer>
-</div>
-<script>
-const tabbar=document.getElementById('tabbar');
-const main=document.getElementById('main');
-const tabName=document.getElementById('tab-name');
-const boxName=document.getElementById('box-name');
-const addTab=document.getElementById('add-tab');
-const addBox=document.getElementById('add-box');
-const makeTab=(id,label)=>{const tab=document.createElement('div');tab.className='tab';tab.dataset.target=id;tab.innerHTML=`<span class="label">${label}</span><span class="actions"><button data-action="edit" title="Rename">✎</button><button data-action="left" title="Move left">◀</button><button data-action="right" title="Move right">▶</button><button data-action="delete" title="Delete">✕</button></span>`;return tab;};
-const makeWindow=(title,left=40,top=40,width=300)=>{const win=document.createElement('section');win.className='window';win.style.left=left+'px';win.style.top=top+'px';win.style.width=width+'px';win.innerHTML=`<div class="titlebar"><strong>${title}</strong></div><div class="content"><p>Drag this box around.</p></div>`;dragBox(win);return win;};
-const activate=id=>{document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.target===id));document.querySelectorAll('.desktop-view').forEach(v=>v.classList.toggle('active',v.id===id));};
-const addDesktop=label=>{const id='tab-'+Date.now();const tab=makeTab(id,label);tabbar.appendChild(tab);const view=document.createElement('section');view.className='desktop-view';view.id=id;view.appendChild(makeWindow(label));main.appendChild(view);activate(id);};
-const activeView=()=>document.querySelector('.desktop-view.active');
-const addBoxToActive=title=>{const view=activeView();if(!view)return;const count=view.querySelectorAll('.window').length;view.appendChild(makeWindow(title,40+(count*30)%320,40+Math.floor(count/4)*180,280));};
-const moveTab=(tab,dir)=>{const sibling=dir<0?tab.previousElementSibling:tab.nextElementSibling;if(!sibling)return;const view=document.getElementById(tab.dataset.target);const targetView=dir<0?view.previousElementSibling:view.nextElementSibling;tabbar.insertBefore(tab,sibling);main.insertBefore(view,targetView);};
-const renameTab=tab=>{const name=prompt('New tab name',tab.querySelector('.label').textContent);if(name)tab.querySelector('.label').textContent=name;};
-const removeTab=tab=>{const view=document.getElementById(tab.dataset.target);const active=tab.classList.contains('active');const next=tab.previousElementSibling||tab.nextElementSibling;tab.remove();view.remove();if(active&&next)activate(next.dataset.target);};
-const tabClick=e=>{const action=e.target.closest('button[data-action]');const tab=e.target.closest('.tab');if(action&&tab){const act=action.dataset.action;if(act==='edit')renameTab(tab);if(act==='left')moveTab(tab,-1);if(act==='right')moveTab(tab,1);if(act==='delete')removeTab(tab);}else if(tab){activate(tab.dataset.target);}};
-const submit=(input,fn)=>{const value=input.value.trim();if(!value)return;fn(value);input.value='';input.focus();};
-addTab.addEventListener('click',()=>submit(tabName,addDesktop));
-addBox.addEventListener('click',()=>submit(boxName,addBoxToActive));
-[tabName,boxName].forEach(input=>input.addEventListener('keydown',e=>{if(e.key==='Enter')e.target===tabName?addTab.click():addBox.click();}));
-const dragBox=win=>{const bar=win.querySelector('.titlebar');if(!bar)return;bar.addEventListener('pointerdown',e=>{e.preventDefault();const view=win.closest('.desktop-view');const startX=e.clientX,startY=e.clientY,startLeft=parseInt(win.style.left,10)||0,startTop=parseInt(win.style.top,10)||0;const move=e=>{const rect=view.getBoundingClientRect();const left=Math.min(Math.max(0,startLeft+e.clientX-startX),rect.width-win.offsetWidth);const top=Math.min(Math.max(0,startTop+e.clientY-startY),rect.height-win.offsetHeight);win.style.left=left+'px';win.style.top=top+'px';};const up=()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);};document.addEventListener('pointermove',move);document.addEventListener('pointerup',up);});};
-document.querySelectorAll('.window').forEach(dragBox);
-const tabs=[['home','Home'],['work','Work'],['tutorial','Tutorial'],['about','About']];tabs.forEach(([id,label])=>tabbar.appendChild(makeTab(id,label)));
-activate('home');
-tabbar.addEventListener('click',tabClick);
-</script>
-</body>
+      const assistant = document.querySelector(".bmo-assistant");
+      const assistantPanel = document.getElementById("bmo-assistant-panel");
+      const assistantToggle = document.getElementById("bmo-assistant-toggle");
+      const assistantClose = document.getElementById("bmo-assistant-close");
+      const assistantImage = document.getElementById("bmo-assistant-image");
+      const assistantForm = document.getElementById("bmo-assistant-form");
+      const assistantInput = document.getElementById("bmo-assistant-input");
+      const assistantMessages = document.getElementById("bmo-assistant-messages");
+      const assistantAsk = assistantForm.querySelector("button");
+      let assistantState = "sad";
+      const assistantImages = {
+        sad: ["bmo-sad.png", "Sad BMO"],
+        loading: ["bmo-loading.png", "BMO is thinking"],
+        happy: ["bmo-happy.png", "Happy BMO"],
+      };
+      const setAssistantState = (state) => {
+        assistantState = state;
+        const [src, alt] = assistantImages[state];
+        assistantImage.src = src;
+        assistantImage.alt = alt;
+      };
+      const addAssistantMessage = (text, author) => {
+        const message = document.createElement("p");
+        message.className = `bmo-message ${author}`;
+        message.textContent = text;
+        assistantMessages.appendChild(message);
+        assistantMessages.scrollTop = assistantMessages.scrollHeight;
+      };
+      const answerQuestion = async (question) => {
+        const normalized = question.toLowerCase();
+        if (normalized.includes("hello") || normalized.includes("hi")) {
+          return "Hi there! I am BMO, ready to help.";
+        }
+        if (normalized.includes("time")) {
+          return `It is ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })} where you are.`;
+        }
+        if (normalized.includes("weather")) {
+          return "I cannot check live weather yet, but looking outside is a great start!";
+        }
+        if (normalized.includes("your name") || normalized.includes("who are you")) {
+          return "I am BMO, your cheerful little desktop helper.";
+        }
+        const expression = question.replace(/what is|calculate|equals|\?/gi, "").trim();
+        if (/^[\d\s.+*/()%\-]+$/.test(expression) && /\d/.test(expression)) {
+          try {
+            const result = Function(`"use strict"; return (${expression})`)();
+            if (Number.isFinite(result)) return `${expression} = ${result}`;
+          } catch {
+            // Continue to a knowledge lookup when the expression is invalid.
+          }
+        }
+        try {
+          const searchResponse = await fetch(
+            `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(question)}&format=json&origin=*&srlimit=1`,
+          );
+          if (!searchResponse.ok) throw new Error("Search failed");
+          const searchData = await searchResponse.json();
+          const result = searchData.query?.search?.[0];
+          if (!result) return "I could not find a reliable answer for that yet. Try asking about a person, place, idea, or event.";
+          const summaryResponse = await fetch(
+            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(result.title.replaceAll(" ", "_"))}`,
+          );
+          if (!summaryResponse.ok) throw new Error("Summary failed");
+          const summary = await summaryResponse.json();
+          if (summary.extract) return `${summary.title}: ${summary.extract}`;
+        } catch {
+          return "I could not reach my knowledge source right now. Please check your connection and ask again.";
+        }
+        return "I could not find a reliable answer for that yet. Try asking about a person, place, idea, or event.";
+      };
+      const openAssistant = () => {
+        assistantPanel.classList.add("open");
+        assistantToggle.setAttribute("aria-expanded", "true");
+        assistantToggle.setAttribute("aria-label", "Close Ask BMO");
+        if (assistantState === "sad") setAssistantState("happy");
+        assistantInput.focus();
+      };
+      const closeAssistant = () => {
+        assistantPanel.classList.remove("open");
+        assistantToggle.setAttribute("aria-expanded", "false");
+        assistantToggle.setAttribute("aria-label", "Open Ask BMO");
+        setAssistantState("sad");
+      };
+      assistantToggle.addEventListener("click", () =>
+        assistantPanel.classList.contains("open") ? closeAssistant() : openAssistant(),
+      );
+      assistantClose.addEventListener("click", closeAssistant);
+      assistant.addEventListener("mouseleave", () => {
+        if (!assistantPanel.classList.contains("open")) setAssistantState("sad");
+      });
+      assistantForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const question = assistantInput.value.trim();
+        if (!question || assistantAsk.disabled) return;
+        addAssistantMessage(question, "user");
+        assistantInput.value = "";
+        assistantAsk.disabled = true;
+        setAssistantState("loading");
+        window.setTimeout(async () => {
+          addAssistantMessage(await answerQuestion(question), "bmo");
+          assistantAsk.disabled = false;
+          setAssistantState("happy");
+          assistantInput.focus();
+        }, 850);
+      });
+    </script>
+  </body>
 </html>
