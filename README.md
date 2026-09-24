@@ -135,5 +135,7 @@ The project also contains artwork and third-party emulator or patch-related asse
 ## Credits
 
 Created by [reyaanshgd](https://github.com/reyaanshgd).
+Kirby dreamland2 and snes9x emulator: https://www.romhacking.net
+
 
 Enjoy exploring BM0OS!
