@@ -8,7 +8,7 @@
       :root {
         color-scheme: dark;
         font-family:
-          Inter,
+          "Trebuchet MS",
           system-ui,
           -apple-system,
           BlinkMacSystemFont,
@@ -20,7 +20,7 @@
       }
       body {
         margin: 0;
-        background: #0b1a2f url("bmo-bmo-dance.jpg") center / cover no-repeat;
+        background: #0b1a2f url("bmo-bmo-dance.jpg") center / cover fixed;
         color: #eef7ff;
         min-height: 100vh;
       }
@@ -61,12 +61,23 @@
         gap: 0.55rem;
         align-items: center;
       }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .control-group label {
+        color: #d9fff2;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
       .controls input,
       .controls button {
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 999px;
-        padding: 0.58rem 0.9rem;
-        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid #7190a5;
+        border-radius: 0.6rem;
+        padding: 0.68rem 0.9rem;
+        background: #152c43;
         color: #eef7ff;
         font-size: 0.92rem;
       }
@@ -80,8 +91,16 @@
           transform 0.2s ease;
       }
       .controls button:hover {
-        background: rgba(255, 255, 255, 0.16);
+        background: #234866;
         transform: translateY(-1px);
+      }
+      input::placeholder {
+        color: #b4c8d5;
+        opacity: 1;
+      }
+      :focus-visible {
+        outline: 3px solid #ffd76b;
+        outline-offset: 2px;
       }
       .tabs {
         display: flex;
@@ -96,13 +115,13 @@
         padding: 0.55rem 0.8rem;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.12);
-        color: #eef7ff;
+        color: #000000;
         cursor: pointer;
         user-select: none;
       }
       .tab.active {
         background: #70f1c7;
-        color: #07221f;
+        color: #000000;
       }
       .tab .label {
         font-weight: 700;
@@ -132,11 +151,7 @@
         min-height: 72vh;
         border-radius: 24px;
         padding: 1rem 1rem 1.25rem;
-        background: linear-gradient(
-          180deg,
-          rgba(8, 20, 37, 0.88),
-          rgba(10, 21, 38, 0.72)
-        );
+        background: #8e8a8a;
         border: 1px solid rgba(255, 255, 255, 0.16);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         overflow: hidden;
@@ -153,8 +168,8 @@
       .info-card {
         padding: 1.15rem 1.2rem;
         border-radius: 18px;
-        background: rgba(255, 255, 255, 0.09);
-        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(8, 24, 43, 0.94);
+        border: 1px solid #55748a;
         backdrop-filter: blur(8px);
         box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
       }
@@ -203,7 +218,7 @@
         width: min(100%, 480px);
         min-height: 320px;
         border-radius: 24px;
-        background: linear-gradient(180deg, rgba(74, 127, 156, 0.22), rgba(11, 26, 47, 0.6));
+        background: #1a3551;
         border: 1px solid rgba(255, 255, 255, 0.14);
       }
       .bmo-head {
@@ -211,9 +226,11 @@
         width: 200px;
         height: 200px;
         border-radius: 28% 28% 30% 30%;
-        background: linear-gradient(180deg, #9ee7ff 0%, #6dd3f8 35%, #4bb3d4 100%);
+        background: #9ee7ff;
         border: 6px solid #0a2435;
-        box-shadow: inset 0 8px 18px rgba(255, 255, 255, 0.28), 0 18px 38px rgba(0, 0, 0, 0.22);
+        box-shadow:
+          inset 0 8px 18px rgba(255, 255, 255, 0.28),
+          0 18px 38px rgba(0, 0, 0, 0.22);
       }
       .bmo-head::before {
         content: "";
@@ -253,8 +270,12 @@
         background: #0b2437;
         box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.08);
       }
-      .bmo-eye.left { left: 24px; }
-      .bmo-eye.right { right: 24px; }
+      .bmo-eye.left {
+        left: 24px;
+      }
+      .bmo-eye.right {
+        right: 24px;
+      }
       .bmo-eye::after {
         content: "";
         position: absolute;
@@ -292,7 +313,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 0.7rem 0.9rem;
-        background: linear-gradient(90deg, #1e3b5a, #276372);
+        background: #1e3b5a;
         color: #fff;
         cursor: grab;
         user-select: none;
@@ -313,10 +334,10 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.85rem 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        border: 1px solid #55748a;
         border-radius: 16px;
-        background: rgba(8, 18, 35, 0.72);
-        color: #9dc1d1;
+        background: rgba(8, 18, 35, 0.94);
+        color: #c5d9e5;
         font-size: 0.95rem;
       }
       .controller-launcher {
@@ -334,7 +355,9 @@
         background: rgba(8, 18, 35, 0.92);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         cursor: pointer;
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
       }
       .controller-launcher:hover,
       .controller-launcher:focus-visible {
@@ -354,79 +377,57 @@
         padding: 1.5rem;
       }
       .emulator-card {
-        width: min(720px, 100%);
-        padding: 2rem;
+        width: min(1000px, 100%);
+        padding: 1rem;
         border: 1px solid rgba(255, 215, 107, 0.35);
         border-radius: 18px;
         background: rgba(8, 18, 35, 0.76);
-        text-align: center;
+        text-align: left;
       }
       .emulator-card h2 {
         margin-top: 0;
         color: #ffd76b;
       }
-      .emulator-card p {
-        color: #cfe4ef;
-        line-height: 1.5;
-      }
-      .emulator-actions {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.7rem;
-        margin-top: 1.25rem;
-      }
-      .emulator-actions a {
-        border-radius: 999px;
-        padding: 0.65rem 0.9rem;
-        background: #ffd76b;
-        color: #172238;
-        font-weight: 700;
-        text-decoration: none;
-      }
-      .emulator-form {
-        display: grid;
-        gap: 0.75rem;
-        margin-top: 1.25rem;
-        text-align: left;
-      }
-      .emulator-form label {
-        color: #d9fff2;
+      .emulator-status {
+        min-height: 1.5rem;
+        margin: 0 0 0.75rem;
+        color: #ffd76b;
         font-size: 0.9rem;
-        font-weight: 700;
       }
-      .emulator-form input[type="file"] {
-        width: 100%;
-        padding: 0.6rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.08);
-        color: #eef7ff;
-      }
-      .emulator-form button {
-        justify-self: center;
+      .emulator-retry {
+        margin-bottom: 0.75rem;
         border: 0;
-        border-radius: 999px;
-        padding: 0.7rem 1rem;
+        border-radius: 0.5rem;
+        padding: 0.6rem 0.8rem;
         background: #70f1c7;
         color: #07221f;
         font-weight: 700;
         cursor: pointer;
       }
-      .emulator-form button:disabled {
-        cursor: wait;
-        opacity: 0.6;
+      .emulator-retry[hidden] {
+        display: none;
       }
-      .emulator-status {
-        min-height: 1.5rem;
-        margin: 0.9rem 0 0;
-        color: #ffd76b;
-        font-size: 0.9rem;
+      #confusion {
+        padding: 0;
+      }
+      .dance-gallery {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+        overflow: hidden;
+      }
+      .dance-gallery img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform-origin: center;
       }
       #web-emulator {
         width: 100%;
-        min-height: 420px;
-        margin-top: 1.25rem;
+        min-height: 70vh;
         background: #050b14;
       }
       .bmo-assistant {
@@ -446,7 +447,9 @@
         background: rgba(8, 18, 35, 0.9);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         cursor: pointer;
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
       }
       .bmo-assistant-toggle:hover,
       .bmo-assistant-toggle:focus-visible {
@@ -480,7 +483,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 0.8rem 1rem;
-        background: linear-gradient(90deg, #1e3b5a, #276372);
+        background: #1e3b5a;
       }
       .bmo-assistant-header strong {
         color: #fff;
@@ -527,10 +530,10 @@
       .bmo-assistant-form input {
         min-width: 0;
         flex: 1;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid #7190a5;
         border-radius: 999px;
         padding: 0.6rem 0.75rem;
-        background: rgba(255, 255, 255, 0.08);
+        background: #152c43;
         color: #fff;
       }
       .bmo-assistant-form button {
@@ -547,6 +550,10 @@
         opacity: 0.55;
       }
       @media (max-width: 720px) {
+        .dance-gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: repeat(6, minmax(0, 1fr));
+        }
         .topbar {
           flex-direction: column;
           align-items: flex-start;
@@ -578,19 +585,25 @@
         <div>
           <h1>BM0OS Desktop</h1>
           <p>
-            Create tabs, add boxes, and arrange your workspace in a clean
+            As per my job , I might >:], help you Create tabs, add boxes, and arrange your workspace in a clean
             layout.
           </p>
         </div>
         <div class="controls">
-          <input id="tab-name" placeholder="New tab name" />
+          <div class="control-group">
+            <label for="tab-name">Create a tab</label>
+            <input id="tab-name" placeholder="e.g. Planning" />
+          </div>
           <button id="add-tab">Add tab</button>
-          <input id="box-name" placeholder="New box title" />
+          <div class="control-group">
+            <label for="box-name">Create a box</label>
+            <input id="box-name" placeholder="e.g. Notes" />
+          </div>
           <button id="add-box">Add box</button>
         </div>
       </header>
 
-      <nav class="tabs" id="tabbar" aria-label="Desktop tabs"></nav>
+      <nav class="tabs" id="desktop-tab-strip" aria-label="Desktop tabs"></nav>
 
       <main class="main" id="main">
         <section class="desktop-view active" id="home">
@@ -709,75 +722,106 @@
         <section class="desktop-view" id="games">
           <div class="emulator-panel">
             <article class="emulator-card">
-              <p class="eyebrow">Game cartridge</p>
-              <h2>Kirby's Dream Land 2 DX v1.2</h2>
-              <p>
-                Choose your legally owned original Kirby's Dream Land 2 ROM and
-                the supplied BPS patch. Everything is patched locally in your
-                browser, then launched in a WebAssembly SNES emulator.
+              <p class="eyebrow">Game Boy</p>
+              <h2>Kirby's Dream Land 2</h2>
+              <p class="emulator-status" id="emulator-status" aria-live="polite">
+                Select Games to start.
               </p>
-              <form class="emulator-form" id="emulator-form">
-                <label for="original-rom">Original ROM (.sfc or .smc)</label>
-                <input id="original-rom" type="file" accept=".sfc,.smc,application/octet-stream" required />
-                <label for="bps-patch">DX patch ZIP or BPS file</label>
-                <input id="bps-patch" type="file" accept=".zip,.bps,application/zip,application/octet-stream" required />
-                <button type="submit">Patch and play in browser</button>
-              </form>
-              <p class="emulator-status" id="emulator-status" aria-live="polite"></p>
-              <div id="web-emulator" aria-label="SNES emulator"></div>
-              <div class="emulator-actions">
-                <a href="snes9x%20emulator.zip" download>Download Snes9x</a>
-                <a href="Kirby's%20Dream%20Land%202%20DX%20v1.2.zip" download>Download game patch</a>
-              </div>
+              <button class="emulator-retry" id="emulator-retry" type="button" hidden>
+                Retry startup
+              </button>
+              <div id="web-emulator" aria-label="Game Boy emulator"></div>
             </article>
+          </div>
+        </section>
+
+        <section class="desktop-view" id="confusion" aria-label="Confusion">
+          <div class="dance-gallery">
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
           </div>
         </section>
       </main>
 
-      <footer class="footer">
-        <span>BM0OS is ready for local preview.</span>
-        <span>Open the site at http://127.0.0.1:55999</span>
-      </footer>
     </div>
     <aside class="bmo-assistant" aria-label="Ask BMO">
       <div class="bmo-assistant-panel" id="bmo-assistant-panel">
         <div class="bmo-assistant-header">
           <strong>Ask BMO</strong>
-          <button class="bmo-assistant-close" id="bmo-assistant-close" type="button" aria-label="Close Ask BMO">&times;</button>
+          <button
+            class="bmo-assistant-close"
+            id="bmo-assistant-close"
+            type="button"
+            aria-label="Close Ask BMO"
+          >
+            &times;
+          </button>
         </div>
-        <div class="bmo-assistant-messages" id="bmo-assistant-messages" aria-live="polite">
-          <p class="bmo-message bmo">Hi! Ask me anything general.</p>
+        <div
+          class="bmo-assistant-messages"
+          id="bmo-assistant-messages"
+          aria-live="polite"
+        >
+          <p class="bmo-message bmo">Hi! Ask me anything general muggle.</p>
         </div>
         <form class="bmo-assistant-form" id="bmo-assistant-form">
-          <input id="bmo-assistant-input" type="text" placeholder="Ask BMO..." autocomplete="off" aria-label="Question for BMO" />
+          <input
+            id="bmo-assistant-input"
+            type="text"
+            placeholder="Ask BMO..."
+            autocomplete="off"
+            aria-label="Question for BMO"
+          />
           <button type="submit">Ask</button>
         </form>
       </div>
-      <button class="bmo-assistant-toggle" id="bmo-assistant-toggle" type="button" aria-label="Open Ask BMO" aria-expanded="false">
+      <button
+        class="bmo-assistant-toggle"
+        id="bmo-assistant-toggle"
+        type="button"
+        aria-label="Open Ask BMO"
+        aria-expanded="false"
+      >
         <img id="bmo-assistant-image" src="bmo-sad.png" alt="Sad BMO" />
       </button>
     </aside>
-    <button class="controller-launcher" id="controller-launcher" type="button" aria-label="Open games">
+    <button
+      class="controller-launcher"
+      id="games-dock-trigger"
+      type="button"
+      aria-label="Open games"
+    >
       <img src="retro controller.png" alt="Retro controller" />
     </button>
     <script>
-      const tabbar = document.getElementById("tabbar");
+      const desktopTabStrip = document.getElementById("desktop-tab-strip");
       const main = document.getElementById("main");
       const tabName = document.getElementById("tab-name");
       const boxName = document.getElementById("box-name");
       const addTab = document.getElementById("add-tab");
       const addBox = document.getElementById("add-box");
-      const controllerLauncher = document.getElementById("controller-launcher");
-      const emulatorForm = document.getElementById("emulator-form");
-      const originalRomInput = document.getElementById("original-rom");
-      const bpsPatchInput = document.getElementById("bps-patch");
+      const gamesDockTrigger = document.getElementById("games-dock-trigger");
       const emulatorStatus = document.getElementById("emulator-status");
-      const emulatorButton = emulatorForm.querySelector("button");
+      const emulatorRetry = document.getElementById("emulator-retry");
       const makeTab = (id, label) => {
         const tab = document.createElement("div");
         tab.className = "tab";
         tab.dataset.target = id;
-        tab.innerHTML = `<span class="label">${label}</span><span class="actions"><button data-action="edit" title="Rename">✎</button><button data-action="left" title="Move left">◀</button><button data-action="right" title="Move right">▶</button><button data-action="delete" title="Delete">✕</button></span>`;
+        const deleteButton =
+          id === "games"
+            ? ""
+            : '<button data-action="delete" title="Delete">✕</button>';
+        tab.innerHTML = `<span class="label">${label}</span><span class="actions"><button data-action="edit" title="Rename">✎</button><button data-action="left" title="Move left">◀</button><button data-action="right" title="Move right">▶</button>${deleteButton}</span>`;
         return tab;
       };
       const makeWindow = (title, left = 40, top = 40, width = 300) => {
@@ -799,28 +843,29 @@
         document
           .querySelectorAll(".desktop-view")
           .forEach((v) => v.classList.toggle("active", v.id === id));
+        if (id === "games") loadBundledGame();
       };
       const addDesktop = (label) => {
         const id = "tab-" + Date.now();
         const tab = makeTab(id, label);
-        tabbar.appendChild(tab);
-        const view = document.createElement("section");
-        view.className = "desktop-view";
-        view.id = id;
-        view.appendChild(makeWindow(label));
-        main.appendChild(view);
+        desktopTabStrip.appendChild(tab);
+        const desktopView = document.createElement("section");
+        desktopView.className = "desktop-view";
+        desktopView.id = id;
+        desktopView.appendChild(makeWindow(label));
+        main.appendChild(desktopView);
         activate(id);
       };
       const activeView = () => document.querySelector(".desktop-view.active");
       const addBoxToActive = (title) => {
-        const view = activeView();
-        if (!view) return;
-        const count = view.querySelectorAll(".window").length;
-        view.appendChild(
+        const desktopView = activeView();
+        if (!desktopView) return;
+        const windowCount = desktopView.querySelectorAll(".window").length;
+        desktopView.appendChild(
           makeWindow(
             title,
-            40 + ((count * 30) % 320),
-            40 + Math.floor(count / 4) * 180,
+            40 + ((windowCount * 30) % 320),
+            40 + Math.floor(windowCount / 4) * 180,
             280,
           ),
         );
@@ -829,11 +874,13 @@
         const sibling =
           dir < 0 ? tab.previousElementSibling : tab.nextElementSibling;
         if (!sibling) return;
-        const view = document.getElementById(tab.dataset.target);
+        const desktopView = document.getElementById(tab.dataset.target);
         const targetView =
-          dir < 0 ? view.previousElementSibling : view.nextElementSibling;
-        tabbar.insertBefore(tab, sibling);
-        main.insertBefore(view, targetView);
+          dir < 0
+            ? desktopView.previousElementSibling
+            : desktopView.nextElementSibling;
+        desktopTabStrip.insertBefore(tab, sibling);
+        main.insertBefore(desktopView, targetView);
       };
       const renameTab = (tab) => {
         const name = prompt(
@@ -843,11 +890,12 @@
         if (name) tab.querySelector(".label").textContent = name;
       };
       const removeTab = (tab) => {
-        const view = document.getElementById(tab.dataset.target);
+        if (tab.dataset.target === "games") return;
+        const desktopView = document.getElementById(tab.dataset.target);
         const active = tab.classList.contains("active");
         const next = tab.previousElementSibling || tab.nextElementSibling;
         tab.remove();
-        view.remove();
+        desktopView.remove();
         if (active && next) activate(next.dataset.target);
       };
       const tabClick = (e) => {
@@ -879,17 +927,17 @@
         }),
       );
       const dragBox = (win) => {
-        const bar = win.querySelector(".titlebar");
-        if (!bar) return;
-        bar.addEventListener("pointerdown", (e) => {
-          e.preventDefault();
-          const view = win.closest(".desktop-view");
-          const startX = e.clientX,
-            startY = e.clientY,
+        const windowTitlebar = win.querySelector(".titlebar");
+        if (!windowTitlebar) return;
+        windowTitlebar.addEventListener("pointerdown", (pointerEvent) => {
+          pointerEvent.preventDefault();
+          const desktopView = win.closest(".desktop-view");
+          const startX = pointerEvent.clientX,
+            startY = pointerEvent.clientY,
             startLeft = parseInt(win.style.left, 10) || 0,
             startTop = parseInt(win.style.top, 10) || 0;
           const move = (e) => {
-            const rect = view.getBoundingClientRect();
+            const rect = desktopView.getBoundingClientRect();
             const left = Math.min(
               Math.max(0, startLeft + e.clientX - startX),
               rect.width - win.offsetWidth,
@@ -910,126 +958,128 @@
         });
       };
       document.querySelectorAll(".window").forEach(dragBox);
-      const tabs = [
+      const confusionImages = document.querySelectorAll(
+        "#confusion .dance-gallery img",
+      );
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
+      const animateConfusionImage = (image, currentScale = 1) => {
+        if (reducedMotion.matches) return;
+        const targetScale =
+          currentScale >= 1
+            ? 0.72 + Math.random() * 0.23
+            : 1.05 + Math.random() * 0.4;
+        const animation = image.animate(
+          [
+            { transform: `scale(${currentScale})` },
+            { transform: `scale(${targetScale})` },
+          ],
+          {
+            duration: 600 + Math.random() * 2400,
+            easing: "ease-in-out",
+          },
+        );
+        animation.onfinish = () =>
+          animateConfusionImage(image, targetScale);
+      };
+      confusionImages.forEach((image) => animateConfusionImage(image));
+      reducedMotion.addEventListener("change", (event) => {
+        confusionImages.forEach((image) => {
+          image.getAnimations().forEach((animation) => animation.cancel());
+          if (!event.matches) animateConfusionImage(image);
+        });
+      });
+      const defaultDesktopTabs = [
         ["home", "Home"],
         ["work", "Work"],
         ["tutorial", "Tutorial"],
         ["about", "About"],
+        ["confusion", "Confusion"],
         ["games", "Games"],
       ];
-      tabs.forEach(([id, label]) => tabbar.appendChild(makeTab(id, label)));
+      defaultDesktopTabs.forEach(([id, label]) =>
+        desktopTabStrip.appendChild(makeTab(id, label)),
+      );
       activate("home");
-      tabbar.addEventListener("click", tabClick);
-      controllerLauncher.addEventListener("click", () => activate("games"));
+      desktopTabStrip.addEventListener("click", tabClick);
+      gamesDockTrigger.addEventListener("click", () => activate("games"));
 
-      const readBpsVarInt = (bytes, state) => {
-        let value = 0;
-        let shift = 1;
-        while (state.position < bytes.length) {
-          const data = bytes[state.position++];
-          value += (data & 0x7f) * shift;
-          if (data & 0x80) return value;
-          shift *= 0x80;
-          value += shift;
-        }
-        throw new Error("The BPS patch is incomplete.");
-      };
-      const readBpsSigned = (bytes, state) => {
-        const value = readBpsVarInt(bytes, state);
-        return value & 1 ? -(value >> 1) - 1 : value >> 1;
-      };
-      const applyBpsPatch = (source, patch) => {
-        const bytes = new Uint8Array(patch);
-        const header = new TextDecoder().decode(bytes.slice(0, 4));
-        if (header !== "BPS1") throw new Error("Choose a valid BPS patch.");
-        const state = { position: 4 };
-        const sourceSize = readBpsVarInt(bytes, state);
-        const targetSize = readBpsVarInt(bytes, state);
-        const metadataSize = readBpsVarInt(bytes, state);
-        state.position += metadataSize;
-        if (source.length !== sourceSize) {
-          throw new Error("That ROM does not match the patch's required source ROM.");
-        }
-        const target = new Uint8Array(targetSize);
-        let outputPosition = 0;
-        let sourceRelative = 0;
-        let targetRelative = 0;
-        while (state.position < bytes.length - 12 && outputPosition < targetSize) {
-          const action = readBpsVarInt(bytes, state);
-          const length = (action >> 2) + 1;
-          switch (action & 3) {
-            case 0:
-              target.set(source.slice(outputPosition, outputPosition + length), outputPosition);
-              break;
-            case 1:
-              target.set(bytes.slice(state.position, state.position + length), outputPosition);
-              state.position += length;
-              break;
-            case 2:
-              sourceRelative += readBpsSigned(bytes, state);
-              for (let index = 0; index < length; index++) {
-                target[outputPosition + index] = source[sourceRelative + index];
-              }
-              sourceRelative += length;
-              break;
-            case 3:
-              targetRelative += readBpsSigned(bytes, state);
-              for (let index = 0; index < length; index++) {
-                target[outputPosition + index] = target[targetRelative + index];
-              }
-              targetRelative += length;
-              break;
-            default:
-              throw new Error("Unsupported BPS action.");
-          }
-          outputPosition += length;
-        }
-        if (outputPosition !== targetSize) throw new Error("The BPS patch could not be applied.");
-        return target;
-      };
-      const getPatchBytes = async (file) => {
-        const buffer = await file.arrayBuffer();
-        if (file.name.toLowerCase().endsWith(".bps")) return buffer;
-        const zip = await JSZip.loadAsync(buffer);
-        const patchEntry = Object.values(zip.files).find((entry) => entry.name.toLowerCase().endsWith(".bps"));
-        if (!patchEntry) throw new Error("No BPS patch was found in that ZIP file.");
-        return patchEntry.async("arraybuffer");
-      };
-      const startWebEmulator = (patchedRom) => {
+      const startWebEmulator = (rom) => {
         const previousLoader = document.getElementById("emulatorjs-loader");
         if (previousLoader) previousLoader.remove();
         window.EJS_player = "#web-emulator";
-        window.EJS_core = "snes";
-        window.EJS_gameUrl = URL.createObjectURL(new Blob([patchedRom], { type: "application/octet-stream" }));
+        window.EJS_core = "gb";
+        window.EJS_startOnLoaded = true;
+        let ready = false;
+        const startupTimeout = window.setTimeout(() => {
+          if (ready) return;
+          emulatorStatus.textContent =
+            "The emulator did not finish starting. Check your connection and retry.";
+          emulatorRetry.hidden = false;
+          gameLoadStarted = false;
+        }, 20000);
+        window.EJS_ready = () => {
+          ready = true;
+          window.clearTimeout(startupTimeout);
+          emulatorStatus.textContent = "Emulator ready. Starting the game...";
+        };
+        window.EJS_onGameStart = () => {
+          emulatorStatus.textContent = "Now playing.";
+          emulatorRetry.hidden = true;
+        };
+        window.EJS_gameUrl = URL.createObjectURL(
+          new Blob([rom], { type: "application/octet-stream" }),
+        );
         window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
         const loader = document.createElement("script");
         loader.id = "emulatorjs-loader";
         loader.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
+        loader.onerror = () => {
+          window.clearTimeout(startupTimeout);
+          emulatorStatus.textContent =
+            "The emulator script could not be loaded. Check your connection and retry.";
+          emulatorRetry.hidden = false;
+          gameLoadStarted = false;
+        };
         document.body.appendChild(loader);
       };
-      emulatorForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const originalRom = originalRomInput.files[0];
-        const patchFile = bpsPatchInput.files[0];
-        if (!originalRom || !patchFile) return;
-        emulatorButton.disabled = true;
-        emulatorStatus.textContent = "Applying the patch locally...";
+      let gameLoadStarted = false;
+      const jsZipReady = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
+        script.onload = resolve;
+        script.onerror = () => reject(new Error("Could not load the ZIP reader.(hehehehe...)"));
+        document.head.appendChild(script);
+      });
+      jsZipReady.catch(() => {});
+      const loadBundledGame = async () => {
+        if (gameLoadStarted) return;
+        gameLoadStarted = true;
+        emulatorRetry.hidden = true;
+        emulatorStatus.textContent = "Loading Kirby's Dream Land 2... >:]";
         try {
-          const patchedRom = applyBpsPatch(
-            new Uint8Array(await originalRom.arrayBuffer()),
-            await getPatchBytes(patchFile),
+          await jsZipReady;
+          const response = await fetch("Kirby's%20Dream%20Land%202.zip");
+          if (!response.ok) throw new Error("Could not load the bundled game ZIP.");
+          const archive = await JSZip.loadAsync(await response.arrayBuffer());
+          const romEntry = Object.values(archive.files).find(
+            (entry) => !entry.dir && entry.name.toLowerCase().endsWith(".gb"),
           );
-          emulatorStatus.textContent = "Patch applied. Loading the web emulator...";
-          startWebEmulator(patchedRom);
+          if (!romEntry) throw new Error("The game ZIP does not contain a Game Boy ROM.(*sigh*)");
+          const rom = await romEntry.async("uint8array");
+          emulatorStatus.textContent = "Starting the emulator... #master had me working...";
+          startWebEmulator(rom);
         } catch (error) {
           emulatorStatus.textContent = error.message;
-        } finally {
-          emulatorButton.disabled = false;
+          emulatorRetry.hidden = false;
+          gameLoadStarted = false;
         }
+      };
+      emulatorRetry.addEventListener("click", () => {
+        document.getElementById("web-emulator").replaceChildren();
+        loadBundledGame();
       });
-      const jsZipScript = document.createElement("script");
-      jsZipScript.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
-      document.head.appendChild(jsZipScript);
 
       const assistant = document.querySelector(".bmo-assistant");
       const assistantPanel = document.getElementById("bmo-assistant-panel");
@@ -1038,7 +1088,9 @@
       const assistantImage = document.getElementById("bmo-assistant-image");
       const assistantForm = document.getElementById("bmo-assistant-form");
       const assistantInput = document.getElementById("bmo-assistant-input");
-      const assistantMessages = document.getElementById("bmo-assistant-messages");
+      const assistantMessages = document.getElementById(
+        "bmo-assistant-messages",
+      );
       const assistantAsk = assistantForm.querySelector("button");
       let assistantState = "sad";
       const assistantImages = {
@@ -1062,7 +1114,7 @@
       const answerQuestion = async (question) => {
         const normalized = question.toLowerCase();
         if (normalized.includes("hello") || normalized.includes("hi")) {
-          return "Hi there! I am BMO, ready to help.";
+          return "Hi there! I am BMO, ready to help you (don't really want to).";
         }
         if (normalized.includes("time")) {
           return `It is ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })} where you are.`;
@@ -1070,31 +1122,42 @@
         if (normalized.includes("weather")) {
           return "I cannot check live weather yet, but looking outside is a great start!";
         }
-        if (normalized.includes("your name") || normalized.includes("who are you")) {
+        if (
+          normalized.includes("your name") ||
+          normalized.includes("who are you")
+        ) {
           return "I am BMO, your cheerful little desktop helper.";
         }
-        const expression = question.replace(/what is|calculate|equals|\?/gi, "").trim();
-        if (/^[\d\s.+*/()%\-]+$/.test(expression) && /\d/.test(expression)) {
+        const arithmeticInput = question
+          .replace(/what is|calculate|equals|\?/gi, "")
+          .trim();
+        if (
+          /^[\d\s.+*/()%\-]+$/.test(arithmeticInput) &&
+          /\d/.test(arithmeticInput)
+        ) {
           try {
-            const result = Function(`"use strict"; return (${expression})`)();
-            if (Number.isFinite(result)) return `${expression} = ${result}`;
-          } catch {
-            // Continue to a knowledge lookup when the expression is invalid.
-          }
+            const result = Function(
+              `"use strict"; return (${arithmeticInput})`,
+            )();
+            if (Number.isFinite(result))
+              return `${arithmeticInput} = ${result}`;
+          } catch {}
         }
         try {
-          const searchResponse = await fetch(
+          const encyclopediaSearchResponse = await fetch(
             `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(question)}&format=json&origin=*&srlimit=1`,
           );
-          if (!searchResponse.ok) throw new Error("Search failed");
-          const searchData = await searchResponse.json();
+          if (!encyclopediaSearchResponse.ok) throw new Error("Search failed");
+          const searchData = await encyclopediaSearchResponse.json();
           const result = searchData.query?.search?.[0];
-          if (!result) return "I could not find a reliable answer for that yet. Try asking about a person, place, idea, or event.";
-          const summaryResponse = await fetch(
+          if (!result)
+            return "I could not find a reliable answer for that yet. Try asking about a person, place, idea, or event.";
+          const encyclopediaSummaryResponse = await fetch(
             `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(result.title.replaceAll(" ", "_"))}`,
           );
-          if (!summaryResponse.ok) throw new Error("Summary failed");
-          const summary = await summaryResponse.json();
+          if (!encyclopediaSummaryResponse.ok)
+            throw new Error("I failure ahh");
+          const summary = await encyclopediaSummaryResponse.json();
           if (summary.extract) return `${summary.title}: ${summary.extract}`;
         } catch {
           return "I could not reach my knowledge source right now. Please check your connection and ask again.";
@@ -1115,11 +1178,14 @@
         setAssistantState("sad");
       };
       assistantToggle.addEventListener("click", () =>
-        assistantPanel.classList.contains("open") ? closeAssistant() : openAssistant(),
+        assistantPanel.classList.contains("open")
+          ? closeAssistant()
+          : openAssistant(),
       );
       assistantClose.addEventListener("click", closeAssistant);
       assistant.addEventListener("mouseleave", () => {
-        if (!assistantPanel.classList.contains("open")) setAssistantState("sad");
+        if (!assistantPanel.classList.contains("open"))
+          setAssistantState("sad");
       });
       assistantForm.addEventListener("submit", (event) => {
         event.preventDefault();

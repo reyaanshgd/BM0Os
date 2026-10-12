@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Serve BM0OS preview",
+			"type": "shell",
+			"command": "ruby",
+			"args": [
+				"-run",
+				"-e",
+				"httpd",
+				".",
+				"-p",
+				"8000",
+				"-b",
+				"0.0.0.0"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}
