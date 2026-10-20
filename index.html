@@ -577,6 +577,222 @@
           bottom: 0.75rem;
         }
       }
+ 
+      /* ---------- Added: draggable toys (mechanical pad, star, pixel clock) ---------- */
+      .toy-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 8;
+        pointer-events: none;
+      }
+      .toy {
+        position: absolute;
+        pointer-events: auto;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        cursor: grab;
+      }
+      .toy.dragging {
+        cursor: grabbing;
+      }
+ 
+      /* the pad: dark aluminium case, raised keycaps on switch housings */
+      .mpad {
+        padding: 10px 12px 14px;
+        border-radius: 16px;
+        background: linear-gradient(#2c3340, #1b2029);
+        border: 1px solid #4b5668;
+        box-shadow:
+          0 18px 34px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12),
+          inset 0 -3px 0 rgba(0, 0, 0, 0.35);
+      }
+      .mpad-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font: 700 0.62rem/1 "Courier New", monospace;
+        letter-spacing: 0.18em;
+        color: #9fb0c6;
+      }
+      .mpad-led {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #3a2a22;
+        transition: background 0.1s ease, box-shadow 0.1s ease;
+      }
+      .mpad-led.on {
+        background: #ff9d4a;
+        box-shadow: 0 0 8px #ff9d4a;
+      }
+      .mpad-plate {
+        display: grid;
+        grid-template-columns: repeat(4, 46px);
+        gap: 6px;
+        padding: 8px;
+        border-radius: 10px;
+        background:
+          repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px),
+          #0e1218;
+        box-shadow: inset 0 2px 8px #000;
+      }
+      .mkey {
+        position: relative;
+        width: 46px;
+        height: 50px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        touch-action: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mkey::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 34px;
+        border-radius: 8px;
+        background: #1a1f27;
+        box-shadow: inset 0 0 0 1px #313a48;
+      }
+      .mcap {
+        position: absolute;
+        left: 3px;
+        right: 3px;
+        top: 2px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 7px;
+        background: linear-gradient(180deg, var(--cap-hi), var(--cap));
+        box-shadow:
+          0 7px 0 var(--cap-side),
+          0 9px 6px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        color: var(--legend);
+        font: 700 0.7rem/1 "Courier New", monospace;
+        transition: transform 0.05s ease-out, box-shadow 0.05s ease-out;
+      }
+      /* the little dish on top of each cap */
+      .mcap::after {
+        content: "";
+        position: absolute;
+        inset: 5px;
+        border-radius: 5px;
+        box-shadow:
+          inset 0 2px 4px rgba(0, 0, 0, 0.18),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.4);
+        pointer-events: none;
+      }
+      .mkey.down .mcap {
+        transform: translateY(6px);
+        box-shadow:
+          0 1px 0 var(--cap-side),
+          0 2px 3px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      }
+      .mkey:focus-visible {
+        outline: 2px solid #ffd76b;
+        outline-offset: 1px;
+        border-radius: 8px;
+      }
+      .mkey.cream {
+        --cap: #e6dfcb;
+        --cap-hi: #f4efe0;
+        --cap-side: #b0a687;
+        --legend: #4a4333;
+      }
+      .mkey.slate {
+        --cap: #56627a;
+        --cap-hi: #6b7894;
+        --cap-side: #323a4c;
+        --legend: #dfe6f5;
+      }
+      .mkey.coral {
+        --cap: #ec7456;
+        --cap-hi: #f48d70;
+        --cap-side: #a43f27;
+        --legend: #fff1ea;
+      }
+ 
+      /* the star you click */
+      .toy-star {
+        width: 130px;
+        padding: 6px;
+        border-radius: 50%;
+      }
+      .toy-star svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        filter: drop-shadow(0 0 14px rgba(255, 238, 90, 0.75));
+        pointer-events: none;
+        animation: star-bob 3s ease-in-out infinite;
+      }
+      .toy-star.tapped svg {
+        animation: star-squish 0.25s ease-out;
+      }
+      @keyframes star-bob {
+        50% {
+          transform: translateY(-6px) rotate(-3deg);
+        }
+      }
+      @keyframes star-squish {
+        50% {
+          transform: scale(0.85);
+        }
+      }
+      .toy-star:focus-visible {
+        outline: 3px solid #ffd76b;
+      }
+      /* copy of the star that flies across the screen */
+      .flying-star {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 9999;
+        width: 150px;
+        pointer-events: none;
+        will-change: transform;
+      }
+      .flying-star svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        filter: drop-shadow(0 0 18px rgba(255, 238, 90, 0.9));
+      }
+      .trail {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 9998;
+        width: 16px;
+        height: 16px;
+        background: #ffe45c;
+        pointer-events: none;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      }
+ 
+      /* the pixel clock */
+      .toy-clock canvas {
+        display: block;
+        image-rendering: pixelated;
+        filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.4));
+        pointer-events: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .toy-star svg {
+          animation: none;
+        }
+      }
     </style>
   </head>
   <body>
@@ -602,9 +818,9 @@
           <button id="add-box">Add box</button>
         </div>
       </header>
-
+ 
       <nav class="tabs" id="desktop-tab-strip" aria-label="Desktop tabs"></nav>
-
+ 
       <main class="main" id="main">
         <section class="desktop-view active" id="home">
           <div class="workspace-grid">
@@ -624,7 +840,7 @@
             </section>
           </div>
         </section>
-
+ 
         <section class="desktop-view" id="work">
           <div class="workspace-grid">
             <article class="info-card">
@@ -638,7 +854,7 @@
             </section>
           </div>
         </section>
-
+ 
         <section class="desktop-view" id="tutorial">
           <div class="workspace-grid">
             <article class="info-card">
@@ -699,7 +915,7 @@
             </section>
           </div>
         </section>
-
+ 
         <section class="desktop-view" id="about">
           <div class="workspace-grid">
             <article class="info-card">
@@ -718,7 +934,7 @@
             </section>
           </div>
         </section>
-
+ 
         <section class="desktop-view" id="games">
           <div class="emulator-panel">
             <article class="emulator-card">
@@ -734,9 +950,13 @@
             </article>
           </div>
         </section>
-
+ 
         <section class="desktop-view" id="confusion" aria-label="Confusion">
           <div class="dance-gallery">
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
+            <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
             <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
             <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
             <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
@@ -752,7 +972,7 @@
           </div>
         </section>
       </main>
-
+ 
     </div>
     <aside class="bmo-assistant" aria-label="Ask BMO">
       <div class="bmo-assistant-panel" id="bmo-assistant-panel">
@@ -803,6 +1023,38 @@
     >
       <img src="retro controller.png" alt="Retro controller" />
     </button>
+    <div class="toy-layer" id="toy-layer">
+      <div class="toy toy-clock" id="toy-clock" aria-label="Pixel clock">
+        <canvas id="pixel-clock"></canvas>
+      </div>
+
+      <div class="toy mpad" id="toy-pad">
+        <div class="mpad-top"><span>MICRO PAD</span><span class="mpad-led" id="pad-led"></span></div>
+        <div class="mpad-plate" id="pad-plate"></div>
+      </div>
+
+      <div class="toy toy-star" id="toy-star" role="button" tabindex="0" aria-label="Star. Click to send it flying across the screen.">
+        <svg id="star-art" viewBox="60 300 1500 1260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g fill="#fbe965" stroke="#fbe965" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M440 800 L170 815" stroke-width="64" fill="none" />
+            <ellipse cx="175" cy="820" rx="105" ry="68" stroke="none" />
+            <path d="M600 1060 C500 1160 360 1200 210 1190" stroke-width="64" fill="none" />
+            <ellipse cx="185" cy="1185" rx="105" ry="68" stroke="none" />
+            <path d="M650 1330 L520 1475" stroke-width="64" fill="none" />
+            <ellipse cx="440" cy="1480" rx="125" ry="68" stroke="none" />
+            <path d="M1380 1280 L1480 1430" stroke-width="64" fill="none" />
+            <ellipse cx="1450" cy="1485" rx="115" ry="68" stroke="none" />
+          </g>
+          <polygon
+            points="870,440 1100,545 1400,510 1300,880 1410,1150 1100,1170 770,1330 640,1100 500,770 680,680"
+            fill="#fdf37a" stroke="#fdf37a" stroke-width="140" stroke-linejoin="round" />
+          <circle cx="648" cy="802" r="46" fill="#000" />
+          <circle cx="990" cy="880" r="48" fill="#000" />
+          <path d="M745 850 C820 820 930 900 962 1020 C968 1045 930 1048 850 1052 C790 1052 738 940 745 850 Z"
+            fill="#fdf37a" stroke="#000" stroke-width="42" stroke-linejoin="round" />
+        </svg>
+      </div>
+    </div>
     <script>
       const desktopTabStrip = document.getElementById("desktop-tab-strip");
       const main = document.getElementById("main");
@@ -1004,7 +1256,7 @@
       activate("home");
       desktopTabStrip.addEventListener("click", tabClick);
       gamesDockTrigger.addEventListener("click", () => activate("games"));
-
+ 
       const startWebEmulator = (rom) => {
         const previousLoader = document.getElementById("emulatorjs-loader");
         if (previousLoader) previousLoader.remove();
@@ -1080,7 +1332,7 @@
         document.getElementById("web-emulator").replaceChildren();
         loadBundledGame();
       });
-
+ 
       const assistant = document.querySelector(".bmo-assistant");
       const assistantPanel = document.getElementById("bmo-assistant-panel");
       const assistantToggle = document.getElementById("bmo-assistant-toggle");
@@ -1203,5 +1455,340 @@
         }, 850);
       });
     </script>
+    <script>
+      /* Added: draggable toys. Kept in its own script so the original one is untouched. */
+      (() => {
+        const layer = document.getElementById("toy-layer");
+        const clockBox = document.getElementById("toy-clock");
+        const padBox = document.getElementById("toy-pad");
+        const starBox = document.getElementById("toy-star");
+        const calmMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let topZ = 1;
+ 
+        /* ---- dragging (shared by all three) ---- */
+        const clampToScreen = (el) => {
+          el.style.left = Math.min(Math.max(0, el.offsetLeft), Math.max(0, window.innerWidth - el.offsetWidth)) + "px";
+          el.style.top = Math.min(Math.max(0, el.offsetTop), Math.max(0, window.innerHeight - el.offsetHeight)) + "px";
+        };
+        const makeDraggable = (el, { ignore, onTap } = {}) => {
+          el.addEventListener("pointerdown", (down) => {
+            if (down.pointerType === "mouse" && down.button !== 0) return;
+            if (ignore && down.target.closest(ignore)) return;
+            el.style.zIndex = ++topZ;
+            const startX = down.clientX;
+            const startY = down.clientY;
+            const startLeft = el.offsetLeft;
+            const startTop = el.offsetTop;
+            let moved = false;
+            el.setPointerCapture(down.pointerId);
+            const move = (e) => {
+              const dx = e.clientX - startX;
+              const dy = e.clientY - startY;
+              // small wiggles still count as a click, not a drag
+              if (!moved && Math.hypot(dx, dy) > 5) {
+                moved = true;
+                el.classList.add("dragging");
+              }
+              if (!moved) return;
+              el.style.left = startLeft + dx + "px";
+              el.style.top = startTop + dy + "px";
+              clampToScreen(el);
+            };
+            const up = () => {
+              el.removeEventListener("pointermove", move);
+              el.removeEventListener("pointerup", up);
+              el.removeEventListener("pointercancel", up);
+              el.classList.remove("dragging");
+              if (!moved && onTap) onTap();
+            };
+            el.addEventListener("pointermove", move);
+            el.addEventListener("pointerup", up);
+            el.addEventListener("pointercancel", up);
+          });
+        };
+ 
+        /* ---- the mechanical pad ---- */
+        let audio = null;
+        let noiseBuffer = null;
+        const getAudio = () => {
+          if (!audio) {
+            audio = new (window.AudioContext || window.webkitAudioContext)();
+            // a short burst of noise is the "click" part of the sound
+            const length = Math.floor(audio.sampleRate * 0.05);
+            noiseBuffer = audio.createBuffer(1, length, audio.sampleRate);
+            const data = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < length; i++) data[i] = Math.random() * 2 - 1;
+          }
+          if (audio.state === "suspended") audio.resume();
+          return audio;
+        };
+        const keySound = (goingDown) => {
+          try {
+            const ac = getAudio();
+            const t = ac.currentTime;
+            const click = ac.createBufferSource();
+            click.buffer = noiseBuffer;
+            click.playbackRate.value = 0.9 + Math.random() * 0.3;
+            const filter = ac.createBiquadFilter();
+            filter.type = "bandpass";
+            filter.frequency.value = goingDown ? 3200 : 4200;
+            filter.Q.value = 0.9;
+            const gain = ac.createGain();
+            gain.gain.setValueAtTime(goingDown ? 0.7 : 0.3, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + (goingDown ? 0.04 : 0.025));
+            click.connect(filter).connect(gain).connect(ac.destination);
+            click.start(t);
+            click.stop(t + 0.05);
+            if (goingDown) {
+              // low thump when the key bottoms out
+              const thump = ac.createOscillator();
+              const thumpGain = ac.createGain();
+              thump.type = "sine";
+              thump.frequency.setValueAtTime(170, t);
+              thump.frequency.exponentialRampToValueAtTime(70, t + 0.05);
+              thumpGain.gain.setValueAtTime(0.5, t);
+              thumpGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+              thump.connect(thumpGain).connect(ac.destination);
+              thump.start(t);
+              thump.stop(t + 0.07);
+            }
+          } catch (err) {
+            // no audio available, the keys still move
+          }
+        };
+ 
+        const plate = document.getElementById("pad-plate");
+        const led = document.getElementById("pad-led");
+        const legends = ["1", "2", "3", "4", "5", "6", "7", "8", "A", "B", "C", "D"];
+        const press = (key) => {
+          if (key.classList.contains("down")) return;
+          key.classList.add("down");
+          led.classList.add("on");
+          keySound(true);
+        };
+        const release = (key) => {
+          if (!key.classList.contains("down")) return;
+          key.classList.remove("down");
+          led.classList.remove("on");
+          keySound(false);
+        };
+        legends.forEach((text, i) => {
+          const key = document.createElement("button");
+          key.type = "button";
+          key.className = "mkey " + (i < 8 ? "cream" : i < 11 ? "slate" : "coral");
+          key.innerHTML = `<span class="mcap">${text}</span>`;
+          key.addEventListener("pointerdown", (e) => {
+            e.preventDefault();
+            press(key);
+          });
+          ["pointerup", "pointerleave", "pointercancel"].forEach((name) =>
+            key.addEventListener(name, () => release(key)),
+          );
+          key.addEventListener("keydown", (e) => {
+            if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+              e.preventDefault();
+              press(key);
+            }
+          });
+          key.addEventListener("keyup", () => release(key));
+          key.addEventListener("blur", () => release(key));
+          plate.appendChild(key);
+        });
+        makeDraggable(padBox, { ignore: ".mkey" });
+ 
+        /* ---- the star ---- */
+        const starArt = document.getElementById("star-art");
+        const flyStar = () => {
+          const from = starBox.getBoundingClientRect();
+          const size = 150;
+          const startX = from.left + from.width / 2 - size / 2;
+          const startY = from.top + from.height / 2 - size / 2;
+          // fly toward whichever side of the screen has more room
+          const goRight = from.left + from.width / 2 < window.innerWidth / 2;
+          const endX = goRight ? window.innerWidth + size : -size * 2;
+          const endY = window.innerHeight * (0.08 + Math.random() * 0.5);
+          const midX = (startX + endX) / 2;
+          const midY = Math.max(0, Math.min(startY, endY) - 60 - Math.random() * 100);
+ 
+          const flyer = document.createElement("div");
+          flyer.className = "flying-star";
+          flyer.appendChild(starArt.cloneNode(true));
+          document.body.appendChild(flyer);
+ 
+          const spin = goRight ? 1 : -1;
+          const calm = calmMotion.matches;
+          const path = calm
+            ? [
+                { transform: `translate(${startX}px, ${startY}px)`, opacity: 1 },
+                { transform: `translate(${endX}px, ${startY}px)`, opacity: 0.2 },
+              ]
+            : [
+                { transform: `translate(${startX}px, ${startY}px) rotate(0deg) scale(0.5)` },
+                { transform: `translate(${midX}px, ${midY}px) rotate(${360 * spin}deg) scale(1.15)`, offset: 0.5 },
+                { transform: `translate(${endX}px, ${endY}px) rotate(${720 * spin}deg) scale(0.7)` },
+              ];
+          const flight = flyer.animate(path, {
+            duration: calm ? 600 : 1600,
+            easing: "cubic-bezier(0.35, 0.1, 0.3, 1)",
+          });
+ 
+          // drop little stars behind it while it travels
+          const dropTrail = setInterval(() => {
+            if (calm) return;
+            const r = flyer.getBoundingClientRect();
+            const bit = document.createElement("div");
+            bit.className = "trail";
+            const x = r.left + r.width / 2 - 8 + (Math.random() - 0.5) * 40;
+            const y = r.top + r.height / 2 - 8 + (Math.random() - 0.5) * 40;
+            document.body.appendChild(bit);
+            const fade = bit.animate(
+              [
+                { transform: `translate(${x}px, ${y}px) scale(1) rotate(0deg)`, opacity: 1 },
+                { transform: `translate(${x}px, ${y + 30}px) scale(0.1) rotate(180deg)`, opacity: 0 },
+              ],
+              { duration: 600, easing: "ease-out" },
+            );
+            fade.onfinish = () => bit.remove();
+          }, 55);
+          flight.onfinish = () => {
+            clearInterval(dropTrail);
+            flyer.remove();
+          };
+        };
+        const tapStar = () => {
+          starBox.classList.remove("tapped");
+          void starBox.offsetWidth; // lets the squish replay on quick clicks
+          starBox.classList.add("tapped");
+          flyStar();
+        };
+        makeDraggable(starBox, { onTap: tapStar });
+        starBox.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            tapStar();
+          }
+        });
+ 
+        /* ---- the pixel clock: drawn small, then sheared so it sits sideways ---- */
+        const canvas = document.getElementById("pixel-clock");
+        const out = canvas.getContext("2d");
+        const W = 64; // flat face size in pixels
+        const H = 24;
+        const DEPTH = 6; // how thick the slab looks
+        const SCALE = 3; // screen pixels per art pixel
+        const lift = (W - 1) >> 1; // the face climbs 1px for every 2px across
+        const margin = Math.ceil(DEPTH / 2);
+        canvas.width = W + DEPTH;
+        canvas.height = H + lift + margin + 1;
+        canvas.style.width = canvas.width * SCALE + "px";
+        canvas.style.height = canvas.height * SCALE + "px";
+ 
+        const face = document.createElement("canvas");
+        face.width = W;
+        face.height = H;
+        const fctx = face.getContext("2d", { willReadFrequently: true });
+ 
+        const colour = {
+          body: "#2a2f52",
+          rim: "#6b74c4",
+          side: "#171a33",
+          backEdge: "#2f3566",
+          screen: "#0b1613",
+          lit: "#7dffb2",
+          dim: "#16352a",
+        };
+        // each segment is [x, y, width, height] inside a 7 x 11 digit
+        const segments = {
+          a: [1, 0, 5, 1],
+          b: [6, 1, 1, 4],
+          c: [6, 6, 1, 4],
+          d: [1, 10, 5, 1],
+          e: [0, 6, 1, 4],
+          f: [0, 1, 1, 4],
+          g: [1, 5, 5, 1],
+        };
+        const digitSegments = {
+          0: "abcdef", 1: "bc", 2: "abdeg", 3: "abcdg", 4: "bcfg",
+          5: "acdfg", 6: "acdefg", 7: "abc", 8: "abcdefg", 9: "abcdfg", " ": "",
+        };
+        const drawDigit = (x, y, ch) => {
+          Object.entries(segments).forEach(([name, [sx, sy, sw, sh]]) => {
+            fctx.fillStyle = digitSegments[ch].includes(name) ? colour.lit : colour.dim;
+            fctx.fillRect(x + sx, y + sy, sw, sh);
+          });
+        };
+        const drawFace = (now) => {
+          fctx.clearRect(0, 0, W, H);
+          fctx.fillStyle = colour.body;
+          fctx.fillRect(0, 0, W, H);
+          // light rim along the top and left edge
+          fctx.fillStyle = colour.rim;
+          fctx.fillRect(2, 0, W - 4, 1);
+          fctx.fillRect(0, 2, 1, H - 4);
+          // round off the corners
+          [[0, 0], [W - 2, 0], [0, H - 1], [W - 2, H - 1]].forEach(([x, y]) => fctx.clearRect(x, y, 2, 1));
+          [[0, 1], [W - 1, 1], [0, H - 2], [W - 1, H - 2]].forEach(([x, y]) => fctx.clearRect(x, y, 1, 1));
+          fctx.fillStyle = colour.screen;
+          fctx.fillRect(4, 3, W - 8, H - 6);
+ 
+          const hour = now.getHours() % 12 || 12;
+          const hh = String(hour).padStart(2, " ");
+          const mm = String(now.getMinutes()).padStart(2, "0");
+          drawDigit(13, 6, hh[0]);
+          drawDigit(22, 6, hh[1]);
+          drawDigit(35, 6, mm[0]);
+          drawDigit(44, 6, mm[1]);
+          // colon blinks once a second
+          fctx.fillStyle = now.getSeconds() % 2 === 0 ? colour.lit : colour.dim;
+          fctx.fillRect(31, 8, 2, 2);
+          fctx.fillRect(31, 13, 2, 2);
+          // small dot in the corner when it is PM
+          fctx.fillStyle = now.getHours() >= 12 ? colour.lit : colour.dim;
+          fctx.fillRect(7, 17, 2, 2);
+        };
+        const renderClock = () => {
+          drawFace(new Date());
+          const pixels = fctx.getImageData(0, 0, W, H).data;
+          out.clearRect(0, 0, canvas.width, canvas.height);
+          const top = (x) => ((W - 1 - x) >> 1) + margin;
+          // thickness first: copies of the shape stepped up and to the left
+          for (let d = DEPTH; d >= 1; d--) {
+            out.fillStyle = d === DEPTH ? colour.backEdge : colour.side;
+            for (let y = 0; y < H; y++) {
+              for (let x = 0; x < W; x++) {
+                if (pixels[(y * W + x) * 4 + 3] === 0) continue;
+                out.fillRect(x + DEPTH - d, y + top(x) - (d >> 1), 1, 1);
+              }
+            }
+          }
+          // then the face itself, sheared into place
+          for (let y = 0; y < H; y++) {
+            for (let x = 0; x < W; x++) {
+              const i = (y * W + x) * 4;
+              if (pixels[i + 3] === 0) continue;
+              out.fillStyle = `rgb(${pixels[i]},${pixels[i + 1]},${pixels[i + 2]})`;
+              out.fillRect(x + DEPTH, y + top(x), 1, 1);
+            }
+          }
+        };
+        renderClock();
+        setInterval(renderClock, 1000);
+        makeDraggable(clockBox);
+ 
+        /* ---- starting spots (all can be dragged anywhere afterwards) ---- */
+        const place = () => {
+          clockBox.style.left = window.innerWidth - clockBox.offsetWidth - 24 + "px";
+          clockBox.style.top = "170px";
+          padBox.style.left = "24px";
+          padBox.style.top = Math.max(120, window.innerHeight - padBox.offsetHeight - 120) + "px";
+          starBox.style.left = window.innerWidth - starBox.offsetWidth - 40 + "px";
+          starBox.style.top = window.innerHeight - starBox.offsetHeight - 130 + "px";
+          [clockBox, padBox, starBox].forEach(clampToScreen);
+        };
+        place();
+        window.addEventListener("resize", () => [clockBox, padBox, starBox].forEach(clampToScreen));
+      })();
+    </script>
   </body>
 </html>
+ 
