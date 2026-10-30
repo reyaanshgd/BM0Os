@@ -577,8 +577,8 @@
           bottom: 0.75rem;
         }
       }
- 
-      /* ---------- Added: draggable toys (mechanical pad, star, pixel clock) ---------- */
+
+      /* ---------- Draggable toys (mechanical pad, star, pixel clock) ---------- */
       .toy-layer {
         position: fixed;
         inset: 0;
@@ -596,7 +596,7 @@
       .toy.dragging {
         cursor: grabbing;
       }
- 
+
       /* the pad: dark aluminium case, raised keycaps on switch housings */
       .mpad {
         padding: 10px 12px 14px;
@@ -720,7 +720,7 @@
         --cap-side: #a43f27;
         --legend: #fff1ea;
       }
- 
+
       /* the star you click */
       .toy-star {
         width: 130px;
@@ -780,8 +780,11 @@
         pointer-events: none;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
       }
- 
+
       /* the pixel clock */
+      .toy-clock {
+        width: 210px;
+      }
       .toy-clock canvas {
         display: block;
         image-rendering: pixelated;
@@ -792,6 +795,60 @@
         .toy-star svg {
           animation: none;
         }
+      }
+
+      /* ---------- Added: box close button + editable text ---------- */
+      .titlebar .win-close {
+        border: 0;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.9rem;
+        padding: 0.1rem 0.4rem;
+        border-radius: 0.4rem;
+      }
+      .titlebar .win-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .content[contenteditable="true"]:focus {
+        outline: 2px solid #70f1c7;
+        outline-offset: -2px;
+      }
+
+      /* ---------- Added: Konami party mode ---------- */
+      @keyframes party-hue {
+        to {
+          filter: hue-rotate(360deg);
+        }
+      }
+      @keyframes party-spin {
+        to {
+          rotate: 360deg;
+        }
+      }
+      .dance-gallery.party {
+        animation: party-hue 1s linear infinite;
+      }
+      .dance-gallery.party img {
+        animation: party-spin 0.8s linear infinite;
+      }
+
+      /* ---------- Added: clock controls ---------- */
+      .clock-ctl {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 6px;
+      }
+      .clock-ctl button,
+      .clock-ctl select,
+      .clock-ctl input {
+        font: 700 0.65rem "Courier New", monospace;
+        padding: 3px 5px;
+        border-radius: 6px;
+        border: 1px solid #6b74c4;
+        background: #171a33;
+        color: #7dffb2;
       }
     </style>
   </head>
@@ -818,9 +875,9 @@
           <button id="add-box">Add box</button>
         </div>
       </header>
- 
+
       <nav class="tabs" id="desktop-tab-strip" aria-label="Desktop tabs"></nav>
- 
+
       <main class="main" id="main">
         <section class="desktop-view active" id="home">
           <div class="workspace-grid">
@@ -840,7 +897,7 @@
             </section>
           </div>
         </section>
- 
+
         <section class="desktop-view" id="work">
           <div class="workspace-grid">
             <article class="info-card">
@@ -854,7 +911,7 @@
             </section>
           </div>
         </section>
- 
+
         <section class="desktop-view" id="tutorial">
           <div class="workspace-grid">
             <article class="info-card">
@@ -915,7 +972,7 @@
             </section>
           </div>
         </section>
- 
+
         <section class="desktop-view" id="about">
           <div class="workspace-grid">
             <article class="info-card">
@@ -934,7 +991,7 @@
             </section>
           </div>
         </section>
- 
+
         <section class="desktop-view" id="games">
           <div class="emulator-panel">
             <article class="emulator-card">
@@ -950,7 +1007,7 @@
             </article>
           </div>
         </section>
- 
+
         <section class="desktop-view" id="confusion" aria-label="Confusion">
           <div class="dance-gallery">
             <img src="bmo-bmo-dance.jpg" alt="BMO dancing" />
@@ -972,7 +1029,7 @@
           </div>
         </section>
       </main>
- 
+
     </div>
     <aside class="bmo-assistant" aria-label="Ask BMO">
       <div class="bmo-assistant-panel" id="bmo-assistant-panel">
@@ -1026,6 +1083,12 @@
     <div class="toy-layer" id="toy-layer">
       <div class="toy toy-clock" id="toy-clock" aria-label="Pixel clock">
         <canvas id="pixel-clock"></canvas>
+        <div class="clock-ctl">
+          <button type="button" id="clock-fmt" title="Toggle 12/24 hour">12h</button>
+          <select id="clock-tz" aria-label="Time zone"></select>
+          <input type="time" id="clock-alarm" aria-label="Alarm time" />
+          <button type="button" id="clock-stop" hidden>Stop</button>
+        </div>
       </div>
 
       <div class="toy mpad" id="toy-pad">
@@ -1055,6 +1118,8 @@
         </svg>
       </div>
     </div>
+
+    <!-- =================== MAIN SCRIPT =================== -->
     <script>
       const desktopTabStrip = document.getElementById("desktop-tab-strip");
       const main = document.getElementById("main");
@@ -1076,16 +1141,51 @@
         tab.innerHTML = `<span class="label">${label}</span><span class="actions"><button data-action="edit" title="Rename">✎</button><button data-action="left" title="Move left">◀</button><button data-action="right" title="Move right">▶</button>${deleteButton}</span>`;
         return tab;
       };
-      const makeWindow = (title, left = 40, top = 40, width = 300) => {
+
+      /* ADDED: makeWindow now builds the DOM safely, has a close button, editable text,
+         and can restore saved HTML content */
+      const makeWindow = (title, left = 40, top = 40, width = 300, html = "<p>Drag this box around.</p>") => {
         const win = document.createElement("section");
         win.className = "window";
         win.style.left = left + "px";
         win.style.top = top + "px";
         win.style.width = width + "px";
-        win.innerHTML = `<div class="titlebar"><strong>${title}</strong></div><div class="content"><p>Drag this box around.</p></div>`;
-        dragBox(win);
+        const bar = document.createElement("div");
+        bar.className = "titlebar";
+        const strong = document.createElement("strong");
+        strong.textContent = title; // textContent so a title can't inject HTML
+        bar.appendChild(strong);
+        const content = document.createElement("div");
+        content.className = "content";
+        content.innerHTML = html;
+        win.append(bar, content);
+        setupWindow(win);
         return win;
       };
+
+      /* ADDED: gives a box its close button, editable text and dragging */
+      const setupWindow = (win) => {
+        const bar = win.querySelector(".titlebar");
+        if (bar && !bar.querySelector(".win-close")) {
+          const x = document.createElement("button");
+          x.type = "button";
+          x.className = "win-close";
+          x.textContent = "✕";
+          x.setAttribute("aria-label", "Close box");
+          x.addEventListener("click", () => {
+            win.remove();
+            saveLayout();
+          });
+          bar.appendChild(x);
+        }
+        const content = win.querySelector(".content");
+        if (content) {
+          content.contentEditable = "true";
+          content.addEventListener("input", () => saveLayout());
+        }
+        dragBox(win);
+      };
+
       const activate = (id) => {
         document
           .querySelectorAll(".tab")
@@ -1162,11 +1262,13 @@
         } else if (tab) {
           activate(tab.dataset.target);
         }
+        saveLayout(); // ADDED
       };
       const submit = (input, fn) => {
         const value = input.value.trim();
         if (!value) return;
         fn(value);
+        saveLayout(); // ADDED
         input.value = "";
         input.focus();
       };
@@ -1178,38 +1280,46 @@
             e.target === tabName ? addTab.click() : addBox.click();
         }),
       );
+
+      /* ADDED: dragBox now ignores the close button and supports arrow keys */
       const dragBox = (win) => {
         const windowTitlebar = win.querySelector(".titlebar");
         if (!windowTitlebar) return;
+        windowTitlebar.tabIndex = 0;
+        windowTitlebar.title = "Arrow keys move this box (Shift = bigger steps)";
+        const place = (left, top) => {
+          const rect = win.closest(".desktop-view").getBoundingClientRect();
+          win.style.left = Math.min(Math.max(0, left), rect.width - win.offsetWidth) + "px";
+          win.style.top = Math.min(Math.max(0, top), rect.height - win.offsetHeight) + "px";
+        };
         windowTitlebar.addEventListener("pointerdown", (pointerEvent) => {
+          if (pointerEvent.target.closest("button")) return;
           pointerEvent.preventDefault();
-          const desktopView = win.closest(".desktop-view");
           const startX = pointerEvent.clientX,
             startY = pointerEvent.clientY,
             startLeft = parseInt(win.style.left, 10) || 0,
             startTop = parseInt(win.style.top, 10) || 0;
-          const move = (e) => {
-            const rect = desktopView.getBoundingClientRect();
-            const left = Math.min(
-              Math.max(0, startLeft + e.clientX - startX),
-              rect.width - win.offsetWidth,
-            );
-            const top = Math.min(
-              Math.max(0, startTop + e.clientY - startY),
-              rect.height - win.offsetHeight,
-            );
-            win.style.left = left + "px";
-            win.style.top = top + "px";
-          };
+          const move = (e) => place(startLeft + e.clientX - startX, startTop + e.clientY - startY);
           const up = () => {
             document.removeEventListener("pointermove", move);
             document.removeEventListener("pointerup", up);
+            saveLayout();
           };
           document.addEventListener("pointermove", move);
           document.addEventListener("pointerup", up);
         });
+        windowTitlebar.addEventListener("keydown", (e) => {
+          if (e.target !== windowTitlebar) return;
+          const s = e.shiftKey ? 40 : 10;
+          const m = { ArrowLeft: [-s, 0], ArrowRight: [s, 0], ArrowUp: [0, -s], ArrowDown: [0, s] }[e.key];
+          if (!m) return;
+          e.preventDefault();
+          place((parseInt(win.style.left, 10) || 0) + m[0], (parseInt(win.style.top, 10) || 0) + m[1]);
+          saveLayout();
+        });
       };
-      document.querySelectorAll(".window").forEach(dragBox);
+      document.querySelectorAll(".window").forEach(setupWindow); // CHANGED from dragBox
+
       const confusionImages = document.querySelectorAll(
         "#confusion .dance-gallery img",
       );
@@ -1255,13 +1365,21 @@
       );
       activate("home");
       desktopTabStrip.addEventListener("click", tabClick);
-      gamesDockTrigger.addEventListener("click", () => activate("games"));
- 
+      gamesDockTrigger.addEventListener("click", () => {
+        activate("games");
+        saveLayout();
+      });
+
       const startWebEmulator = (rom) => {
         const previousLoader = document.getElementById("emulatorjs-loader");
         if (previousLoader) previousLoader.remove();
         window.EJS_player = "#web-emulator";
         window.EJS_core = "gb";
+        /* ADDED: fixed game name so save states survive page reloads */
+        window.EJS_gameName = "Kirbys Dream Land 2";
+        window.EJS_defaultOptions = { "save-state-location": "browser", "save-state-slot": "1" };
+        window.EJS_onSaveState = () => { emulatorStatus.textContent = "State saved."; };
+        window.EJS_onLoadState = () => { emulatorStatus.textContent = "State loaded."; };
         window.EJS_startOnLoaded = true;
         let ready = false;
         const startupTimeout = window.setTimeout(() => {
@@ -1332,7 +1450,7 @@
         document.getElementById("web-emulator").replaceChildren();
         loadBundledGame();
       });
- 
+
       const assistant = document.querySelector(".bmo-assistant");
       const assistantPanel = document.getElementById("bmo-assistant-panel");
       const assistantToggle = document.getElementById("bmo-assistant-toggle");
@@ -1356,13 +1474,26 @@
         assistantImage.src = src;
         assistantImage.alt = alt;
       };
-      const addAssistantMessage = (text, author) => {
+
+      /* ADDED: chat history saved in localStorage */
+      const CHAT_KEY = "bm0os-chat-v1";
+      let chatLog = [];
+      try { chatLog = JSON.parse(localStorage.getItem(CHAT_KEY)) || []; } catch {}
+
+      const renderMessage = (text, author) => {
         const message = document.createElement("p");
         message.className = `bmo-message ${author}`;
         message.textContent = text;
         assistantMessages.appendChild(message);
         assistantMessages.scrollTop = assistantMessages.scrollHeight;
       };
+      const addAssistantMessage = (text, author) => {
+        renderMessage(text, author);
+        chatLog = [...chatLog, { text, author }].slice(-50); // keep last 50
+        try { localStorage.setItem(CHAT_KEY, JSON.stringify(chatLog)); } catch {}
+      };
+      chatLog.forEach(({ text, author }) => renderMessage(text, author));
+
       const answerQuestion = async (question) => {
         const normalized = question.toLowerCase();
         if (normalized.includes("hello") || normalized.includes("hi")) {
@@ -1418,6 +1549,7 @@
       };
       const openAssistant = () => {
         assistantPanel.classList.add("open");
+        assistantMessages.scrollTop = assistantMessages.scrollHeight; // ADDED
         assistantToggle.setAttribute("aria-expanded", "true");
         assistantToggle.setAttribute("aria-label", "Close Ask BMO");
         if (assistantState === "sad") setAssistantState("happy");
@@ -1454,9 +1586,77 @@
           assistantInput.focus();
         }, 850);
       });
+
+      /* ADDED: Konami code easter egg (works while the Confusion tab is open) */
+      const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+      let konamiPos = 0;
+      document.addEventListener("keydown", (e) => {
+        if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable], .titlebar")) return;
+        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        konamiPos = key === konami[konamiPos] ? konamiPos + 1 : key === konami[0] ? 1 : 0;
+        if (konamiPos < konami.length) return;
+        konamiPos = 0;
+        if (!document.getElementById("confusion").classList.contains("active")) return;
+        const gallery = document.querySelector("#confusion .dance-gallery");
+        if (!reducedMotion.matches) gallery.classList.add("party");
+        addAssistantMessage("↑↑↓↓←→←→BA ... BMO is confused too.", "bmo");
+        setTimeout(() => gallery.classList.remove("party"), 6000);
+      });
+
+      /* ADDED: save / restore the whole layout (must stay at the END of this script) */
+      const STORE_KEY = "bm0os-layout-v1";
+
+      const saveLayout = () => {
+        try {
+          const tabs = [...desktopTabStrip.querySelectorAll(".tab")].map((tab) => {
+            const id = tab.dataset.target;
+            const view = document.getElementById(id);
+            return {
+              id,
+              label: tab.querySelector(".label").textContent,
+              active: tab.classList.contains("active"),
+              windows: [...view.querySelectorAll(".window")].map((w) => ({
+                title: w.querySelector(".titlebar strong").textContent,
+                html: w.querySelector(".content").innerHTML,
+                left: parseInt(w.style.left, 10) || 0,
+                top: parseInt(w.style.top, 10) || 0,
+                width: parseInt(w.style.width, 10) || 300,
+              })),
+            };
+          });
+          localStorage.setItem(STORE_KEY, JSON.stringify(tabs));
+        } catch {}
+      };
+
+      const restoreLayout = () => {
+        let saved = null;
+        try { saved = JSON.parse(localStorage.getItem(STORE_KEY)); } catch {}
+        if (!Array.isArray(saved) || !saved.length) return;
+        const keep = new Set(saved.map((t) => t.id));
+        document.querySelectorAll(".desktop-view").forEach((v) => {
+          if (!keep.has(v.id)) v.remove(); // tabs you deleted last time
+        });
+        desktopTabStrip.replaceChildren();
+        saved.forEach(({ id, label, windows = [] }) => {
+          let view = document.getElementById(id);
+          if (!view) {
+            view = document.createElement("section");
+            view.className = "desktop-view";
+            view.id = id;
+          }
+          view.querySelectorAll(".window").forEach((w) => w.remove());
+          windows.forEach((w) => view.appendChild(makeWindow(w.title, w.left, w.top, w.width, w.html)));
+          main.appendChild(view); // keeps saved tab order
+          desktopTabStrip.appendChild(makeTab(id, label));
+        });
+        activate((saved.find((t) => t.active) || saved[0]).id);
+      };
+      restoreLayout(); // keep this call last
     </script>
+
+    <!-- =================== TOYS SCRIPT =================== -->
     <script>
-      /* Added: draggable toys. Kept in its own script so the original one is untouched. */
+      /* Draggable toys. Kept in its own script so the original one is untouched. */
       (() => {
         const layer = document.getElementById("toy-layer");
         const clockBox = document.getElementById("toy-clock");
@@ -1464,7 +1664,7 @@
         const starBox = document.getElementById("toy-star");
         const calmMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let topZ = 1;
- 
+
         /* ---- dragging (shared by all three) ---- */
         const clampToScreen = (el) => {
           el.style.left = Math.min(Math.max(0, el.offsetLeft), Math.max(0, window.innerWidth - el.offsetWidth)) + "px";
@@ -1506,7 +1706,7 @@
             el.addEventListener("pointercancel", up);
           });
         };
- 
+
         /* ---- the mechanical pad ---- */
         let audio = null;
         let noiseBuffer = null;
@@ -1556,7 +1756,7 @@
             // no audio available, the keys still move
           }
         };
- 
+
         const plate = document.getElementById("pad-plate");
         const led = document.getElementById("pad-led");
         const legends = ["1", "2", "3", "4", "5", "6", "7", "8", "A", "B", "C", "D"];
@@ -1595,7 +1795,7 @@
           plate.appendChild(key);
         });
         makeDraggable(padBox, { ignore: ".mkey" });
- 
+
         /* ---- the star ---- */
         const starArt = document.getElementById("star-art");
         const flyStar = () => {
@@ -1609,12 +1809,12 @@
           const endY = window.innerHeight * (0.08 + Math.random() * 0.5);
           const midX = (startX + endX) / 2;
           const midY = Math.max(0, Math.min(startY, endY) - 60 - Math.random() * 100);
- 
+
           const flyer = document.createElement("div");
           flyer.className = "flying-star";
           flyer.appendChild(starArt.cloneNode(true));
           document.body.appendChild(flyer);
- 
+
           const spin = goRight ? 1 : -1;
           const calm = calmMotion.matches;
           const path = calm
@@ -1631,7 +1831,7 @@
             duration: calm ? 600 : 1600,
             easing: "cubic-bezier(0.35, 0.1, 0.3, 1)",
           });
- 
+
           // drop little stars behind it while it travels
           const dropTrail = setInterval(() => {
             if (calm) return;
@@ -1668,12 +1868,12 @@
             tapStar();
           }
         });
- 
+
         /* ---- the pixel clock: drawn small, then sheared so it sits sideways ---- */
         const canvas = document.getElementById("pixel-clock");
         const out = canvas.getContext("2d");
         const W = 64; // flat face size in pixels
-        const H = 24;
+        const H = 32; // CHANGED from 24 to make room for the date line
         const DEPTH = 6; // how thick the slab looks
         const SCALE = 3; // screen pixels per art pixel
         const lift = (W - 1) >> 1; // the face climbs 1px for every 2px across
@@ -1682,12 +1882,12 @@
         canvas.height = H + lift + margin + 1;
         canvas.style.width = canvas.width * SCALE + "px";
         canvas.style.height = canvas.height * SCALE + "px";
- 
+
         const face = document.createElement("canvas");
         face.width = W;
         face.height = H;
         const fctx = face.getContext("2d", { willReadFrequently: true });
- 
+
         const colour = {
           body: "#2a2f52",
           rim: "#6b74c4",
@@ -1717,7 +1917,51 @@
             fctx.fillRect(x + sx, y + sy, sw, sh);
           });
         };
-        const drawFace = (now) => {
+
+        /* ADDED: clock settings, remembered between visits */
+        const clockKey = "bm0os-clock-v1";
+        const clock = Object.assign({ h24: false, tz: "", alarm: "" }, (() => {
+          try { return JSON.parse(localStorage.getItem(clockKey)) || {}; } catch { return {}; }
+        })());
+        const saveClock = () => { try { localStorage.setItem(clockKey, JSON.stringify(clock)); } catch {} };
+
+        /* ADDED: time in the chosen zone */
+        const zoneParts = (date, tz) => {
+          let fmt;
+          try {
+            fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: tz || undefined, hourCycle: "h23",
+              month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit",
+            });
+          } catch {
+            fmt = new Intl.DateTimeFormat("en-US", { hourCycle: "h23", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+          }
+          const o = {};
+          fmt.formatToParts(date).forEach((p) => (o[p.type] = p.value));
+          return { hour: +o.hour % 24, minute: +o.minute, second: +o.second, month: +o.month, day: +o.day };
+        };
+
+        /* ADDED: tiny 3x5 font for the date */
+        const font3x5 = {
+          0: ["111","101","101","101","111"], 1: ["010","110","010","010","111"],
+          2: ["111","001","111","100","111"], 3: ["111","001","111","001","111"],
+          4: ["101","101","111","001","001"], 5: ["111","100","111","001","111"],
+          6: ["111","100","111","101","111"], 7: ["111","001","001","001","001"],
+          8: ["111","101","111","101","111"], 9: ["111","101","111","001","111"],
+          "/": ["001","001","010","100","100"],
+        };
+        const drawSmall = (x, y, text) => {
+          [...text].forEach((ch, i) =>
+            font3x5[ch].forEach((row, ry) =>
+              [...row].forEach((bit, rx) => {
+                if (bit === "1") fctx.fillRect(x + i * 4 + rx, y + ry, 1, 1);
+              }),
+            ),
+          );
+        };
+
+        const pad2 = (n) => String(n).padStart(2, "0");
+        const drawFace = (t, ringing, blinkOn) => {
           fctx.clearRect(0, 0, W, H);
           fctx.fillStyle = colour.body;
           fctx.fillRect(0, 0, W, H);
@@ -1730,24 +1974,90 @@
           [[0, 1], [W - 1, 1], [0, H - 2], [W - 1, H - 2]].forEach(([x, y]) => fctx.clearRect(x, y, 1, 1));
           fctx.fillStyle = colour.screen;
           fctx.fillRect(4, 3, W - 8, H - 6);
- 
-          const hour = now.getHours() % 12 || 12;
-          const hh = String(hour).padStart(2, " ");
-          const mm = String(now.getMinutes()).padStart(2, "0");
+
+          const hour = clock.h24 ? t.hour : t.hour % 12 || 12;
+          const hh = String(hour).padStart(2, clock.h24 ? "0" : " ");
+          const mm = pad2(t.minute);
           drawDigit(13, 6, hh[0]);
           drawDigit(22, 6, hh[1]);
           drawDigit(35, 6, mm[0]);
           drawDigit(44, 6, mm[1]);
-          // colon blinks once a second
-          fctx.fillStyle = now.getSeconds() % 2 === 0 ? colour.lit : colour.dim;
+
+          // colon (flashes fast while the alarm rings)
+          fctx.fillStyle = blinkOn ? colour.lit : colour.dim;
           fctx.fillRect(31, 8, 2, 2);
           fctx.fillRect(31, 13, 2, 2);
-          // small dot in the corner when it is PM
-          fctx.fillStyle = now.getHours() >= 12 ? colour.lit : colour.dim;
-          fctx.fillRect(7, 17, 2, 2);
+
+          // PM dot (hidden in 24h mode) and alarm-set dot
+          fctx.fillStyle = clock.h24 ? colour.screen : t.hour >= 12 ? colour.lit : colour.dim;
+          fctx.fillRect(7, 10, 2, 2);
+          fctx.fillStyle = ringing || clock.alarm ? colour.lit : colour.dim;
+          fctx.fillRect(7, 16, 2, 2);
+
+          // date, MM/DD
+          fctx.fillStyle = colour.lit;
+          drawSmall(22, 21, `${pad2(t.month)}/${pad2(t.day)}`);
         };
+
+        /* ADDED: alarm logic */
+        let ringing = false, ringStart = 0, lastRung = "", prevBlink = false;
+        const fmtBtn = document.getElementById("clock-fmt");
+        const tzSel = document.getElementById("clock-tz");
+        const alarmIn = document.getElementById("clock-alarm");
+        const stopBtn = document.getElementById("clock-stop");
+
+        const beep = () => {
+          try {
+            const ac = getAudio();
+            const o = ac.createOscillator();
+            const g = ac.createGain();
+            o.type = "square";
+            o.frequency.value = 880;
+            g.gain.setValueAtTime(0.15, ac.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
+            o.connect(g).connect(ac.destination);
+            o.start();
+            o.stop(ac.currentTime + 0.16);
+          } catch {}
+        };
+
+        const tickClock = () => {
+          const now = new Date();
+          const t = zoneParts(now, clock.tz);
+          const stamp = `${pad2(t.hour)}:${pad2(t.minute)}`;
+          const minuteId = `${t.month}-${t.day}-${stamp}`;
+          if (clock.alarm && stamp === clock.alarm && minuteId !== lastRung) {
+            lastRung = minuteId;
+            ringing = true;
+            ringStart = Date.now();
+          }
+          if (ringing && Date.now() - ringStart > 60000) ringing = false; // auto-stop after 1 min
+          const blinkOn = ringing ? Math.floor(Date.now() / 250) % 2 === 0 : t.second % 2 === 0;
+          if (ringing && blinkOn && !prevBlink) beep();
+          prevBlink = blinkOn;
+          stopBtn.hidden = !ringing;
+          drawFace(t, ringing, blinkOn);
+        };
+
+        /* ADDED: clock controls */
+        [["", "Local"], ["UTC", "UTC"], ["America/Los_Angeles", "Los Angeles"], ["America/New_York", "New York"],
+         ["Europe/London", "London"], ["Europe/Paris", "Paris"], ["Asia/Tokyo", "Tokyo"], ["Australia/Sydney", "Sydney"]]
+          .forEach(([value, label]) => tzSel.add(new Option(label, value)));
+        tzSel.value = clock.tz;
+        fmtBtn.textContent = clock.h24 ? "24h" : "12h";
+        alarmIn.value = clock.alarm;
+        fmtBtn.addEventListener("click", () => {
+          clock.h24 = !clock.h24;
+          fmtBtn.textContent = clock.h24 ? "24h" : "12h";
+          saveClock();
+          renderClock();
+        });
+        tzSel.addEventListener("change", () => { clock.tz = tzSel.value; saveClock(); renderClock(); });
+        alarmIn.addEventListener("change", () => { clock.alarm = alarmIn.value; saveClock(); renderClock(); });
+        stopBtn.addEventListener("click", () => { ringing = false; renderClock(); });
+
         const renderClock = () => {
-          drawFace(new Date());
+          tickClock(); // CHANGED from drawFace(new Date())
           const pixels = fctx.getImageData(0, 0, W, H).data;
           out.clearRect(0, 0, canvas.width, canvas.height);
           const top = (x) => ((W - 1 - x) >> 1) + margin;
@@ -1772,9 +2082,9 @@
           }
         };
         renderClock();
-        setInterval(renderClock, 1000);
-        makeDraggable(clockBox);
- 
+        setInterval(renderClock, 250); // CHANGED from 1000 so the colon can flash fast
+        makeDraggable(clockBox, { ignore: "button, select, input" }); // CHANGED
+
         /* ---- starting spots (all can be dragged anywhere afterwards) ---- */
         const place = () => {
           clockBox.style.left = window.innerWidth - clockBox.offsetWidth - 24 + "px";
@@ -1791,4 +2101,3 @@
     </script>
   </body>
 </html>
- 
