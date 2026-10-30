@@ -13,6 +13,9 @@ view the site. In Codespaces, open port 8000 from the **Ports** panel.
 - Also includes movable boxes that follow cursor.
 # Update!
 - Added the ability to move, add, delete, and rename tabs and boxes on BM0Os
+- Also added a fun flying star animation
+- added a small micropad that makes sounds when pressed
+- added a digital clock in the corner
 
 # AI assistance disclosure
 AI tools were used during development for the initial HTML/CSS/JavaScript scaffolding,
