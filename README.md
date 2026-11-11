@@ -1,29 +1,29 @@
 # BM0OS Desktop
 
-A single-page, browser-based desktop built with plain HTML, CSS, and JavaScript. Create tabs, add draggable boxes, play a Game Boy game, chat with BMO, and fiddle with a few desktop toys. No build step and no dependencies to install. Built for Hackclub Stardance!!
+A single-page, browser-based desktop built with  HTML, CSS, and JavaScript. Users can create tabs, add draggable boxes, play a Game Boy games, chat with BMO, and fiddle with a desktop toys. No build step and no dependencies to install.
 
 ## Features
 
 ### Desktop
-- **Tabs:** add, rename, reorder (◀ ▶), and delete tabs. The Games tab can't be deleted.
-- **Boxes:** add draggable boxes to any tab.
+- **Tabs:** users can add, name, and reorder them using the ◀ ▶ buttons, and delete tabs. The Games tab can't be deleted.
+- **Boxes:** users can add draggable boxes to any tab.
   - Click a box's text to edit it.
-  - Close a box with the ✕ in its titlebar.
-  - Move a box with the mouse or touch, or focus its titlebar (Tab key) and use the arrow keys. Hold Shift for bigger steps.
-- **Saved layout:** tabs, boxes, positions, sizes, and box text are stored in your browser (`localStorage`) and restored on load.
+  - Close a box with the ✕ in its bar.
+  - Move a box with the mouse, or focus its bar with the tab key, and use the arrow keys. Hold Shift for bigger movements.
+- **Saved layout:** tabs, boxes, positions, sizes, and box text are stored in your browser, and restored on load.
 
-### Ask BMO
-A small chat helper in the bottom-right corner. It answers greetings, the time, simple arithmetic, and general questions via Wikipedia. The last 50 messages are kept between visits.
+### BMO assistent
+Users can use the small chat helper in the bottom-right corner. It gives greetings, shows the time, can do simple arithmetic, and answers general questions using Wikipedia. The last 50 messages are kept between visits.
 
 ### Games
-A Game Boy emulator (EmulatorJS) that loads Kirby's Dream Land 2 from a bundled ZIP. Use the emulator's toolbar to save and load states. A fixed game name is set so saves still match after a page refresh.
+A Game Boy emulator (using EmulatorJS), that loads Kirby's Dream Land 2 from a bundled ZIP! Use the emulator's toolbar to save and load states. A fixed game name is set so saves still match after the page refreshes.
 
 ### Confusion tab
-A grid of dancing BMOs. Enter the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) while on this tab for a short party mode.
+A grid of dancing BMOs. Enter the code (↑ ↑ ↓ ↓ ← → ← → B A) while on this tab for party mode.
 
 ### Toys
 Draggable widgets that float over every tab:
-- **Micro Pad:** a mechanical keypad with click sounds.
+- **Micro Pad:** a mechanical keypad with clicky sounds.
 - **Star:** click it to send it flying across the screen.
 - **Pixel clock:** a sideways pixel-art clock with:
   - a 12h / 24h toggle
@@ -31,7 +31,7 @@ Draggable widgets that float over every tab:
   - a time zone dropdown
   - an alarm (the colon flashes and a beep plays, with a Stop button; it auto-stops after one minute)
 
-## Getting started
+## Getting started(for those who want to make similiar websites :)
 
 1. Put `index.html` (or `bm0os-desktop.html`) and the asset files below in the same folder.
 2. Open the HTML file in a modern browser.
